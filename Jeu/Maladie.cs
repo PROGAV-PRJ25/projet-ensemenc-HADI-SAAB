@@ -1,13 +1,11 @@
 public class Maladies
 {
-    public double Surface {get; set;}
-   public List<string> Plantes {get; set; }
-   public string Type {get; set;}
-   public Maladies(double surface, List<string> plantes, string type)
+    public int NiveauRisque {get; set;}
+   public string Nom {get; set;}
+   public Maladies(int niveauRisque, string nom)
    {
-    Surface = surface;
-    Plantes = plantes; 
-    Type = type;
+    Nom = nom;
+    NiveauRisque = niveauRisque;
    }
    
 }
