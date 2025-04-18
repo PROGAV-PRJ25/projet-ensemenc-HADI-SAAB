@@ -16,7 +16,7 @@ List<Maladie> maladies = new List<Maladie>()
 };
 
 
-Plante tomate = new Plante(
+Comestible tomate = new Comestible(
     nom: "Tomate",
     nature: "Comestible",
     saisons: new List<string> { "Printemps", "Été" },
@@ -30,7 +30,7 @@ Plante tomate = new Plante(
     besoinLumineux: 0.5
 );
 
-Plante carotte = new Plante(
+Comestible carotte = new Comestible(
     nom: "Carotte",
     nature: "Comestible",
     saisons: new List<string> { "Printemps", "Automne" },
@@ -45,11 +45,11 @@ Plante carotte = new Plante(
 );
 
 
-Terrain terrain = new Terrain(
-    type: "Terre",
+Terrain terrain = new Terre(
     surface: 10,
     plantes: new List<Plante> { tomate, carotte }
 );
+
 
 
 Console.WriteLine("Semaine 1 - Météo actuelle :");
