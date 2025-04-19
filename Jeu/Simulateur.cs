@@ -1,13 +1,19 @@
 public class Simulateur
 {
+    public Terrain T { get; private set; }
 
-    void Semer(Plante p, Terrain t)
+    public Simulateur(Terrain t)
     {
-        if (t.Surface >= p.Espace)
+        T = t;
+    }
+
+    void Semer(Plante p)
+    {
+        if (T.Surface >= p.Espace)
         {
-            t.Plantes.Add(p);
-            t.Surface -= p.Espace;
-            Console.WriteLine($"{p.Nom} à été a été semée dans le terrain {t.Type} !");
+            T.Plantes.Add(p);
+            T.Surface -= p.Espace;
+            Console.WriteLine($"{p.Nom} à été a été semée dans le terrain {T.Type} !");
         }
         else 
         {
@@ -17,15 +23,23 @@ public class Simulateur
         
     }
 
-    public void Recolter(Plante p , Terrain t)
+    public void SupprimerPlante(Plante p) //Recolter ou mort
     {
-        if (p.PeutRecolter())
-        {
-            t.Plantes.Remove(p);
-        }
-        else 
-        {
-            Console.WriteLine($"La plante {p.Nom} n’est pas encore prête à être récoltée.");
-        }
+        //Dans la boucle du jeu ajouter les conditions : Estmort ? ou PeutRecolter
+        T.Plantes.Remove(p);
+        
     }
+    
+
+    //Dans la boucle du jeu ajouter 
+    /*
+    public void TourSuivant() 
+    {
+        if (DureeMaladieRestante > 0) 
+        { 
+            DureeMaladieRestante--; 
+            if (DureeMaladieRestante == 0) MaladieActuelle = null; 
+        } 
+    } 
+    */
 }

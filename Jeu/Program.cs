@@ -10,10 +10,7 @@ Meteo meteo = new Meteo(
 );
 
 
-List<Maladie> maladies = new List<Maladie>()
-{
-    new Maladie("Mildiou", 3, 7)
-};
+List<Maladie> maladies = new List<Maladie>(){new Maladie("Mildiou", 3, 7, 0.1)};
 
 
 Comestible tomate = new Comestible(

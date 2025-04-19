@@ -1,0 +1,119 @@
+[
+  {
+    "Nom": "Tomate",
+    "Nature": "L\u00E9gume",
+    "Saisons": [
+      "Printemps",
+      "\u00C9t\u00E9"
+    ],
+    "TerrainPrefere": "Terre",
+    "ZonesTempPreferee": [
+      15,
+      25
+    ],
+    "Espace": 2,
+    "VitesseCroissance": 1.5,
+    "MaladiesPossibles": [
+      {
+        "Nom": "Puceron",
+        "NiveauRisque": 2,
+        "Duree": 5,
+        "ProbabiliteApparition": 0.3
+      },
+      {
+        "Nom": "Mildiou",
+        "NiveauRisque": 3,
+        "Duree": 7,
+        "ProbabiliteApparition": 0.4
+      }
+    ],
+    "Productivite": 10,
+    "BesoinEau": 0.5,
+    "BesoinLumineux": 0.8,
+    "Age": 0,
+    "Sante": 100,
+    "EstMort": false,
+    "Taille": 0,
+    "MaladieActuelle": null,
+    "DureeMaladieRestante": 0,
+    "rng": {}
+  },
+  {
+    "Nom": "Tomate",
+    "Nature": "L\u00E9gume",
+    "Saisons": [
+      "Printemps",
+      "\u00C9t\u00E9"
+    ],
+    "TerrainPrefere": "Terre",
+    "ZonesTempPreferee": [
+      15,
+      25
+    ],
+    "Espace": 2,
+    "VitesseCroissance": 1.5,
+    "MaladiesPossibles": [
+      {
+        "Nom": "Puceron",
+        "NiveauRisque": 2,
+        "Duree": 5,
+        "ProbabiliteApparition": 0.3
+      },
+      {
+        "Nom": "Mildiou",
+        "NiveauRisque": 3,
+        "Duree": 7,
+        "ProbabiliteApparition": 0.4
+      }
+    ],
+    "Productivite": 10,
+    "BesoinEau": 0.5,
+    "BesoinLumineux": 0.8,
+    "Age": 0,
+    "Sante": 100,
+    "EstMort": false,
+    "Taille": 0,
+    "MaladieActuelle": null,
+    "DureeMaladieRestante": 0,
+    "rng": {}
+  },
+  {
+    "Nom": "Tomate",
+    "Nature": "L\u00E9gume",
+    "Saisons": [
+      "Printemps",
+      "\u00C9t\u00E9"
+    ],
+    "TerrainPrefere": "Terre",
+    "ZonesTempPreferee": [
+      15,
+      25
+    ],
+    "Espace": 2,
+    "VitesseCroissance": 1.5,
+    "MaladiesPossibles": [
+      {
+        "Nom": "Puceron",
+        "NiveauRisque": 2,
+        "Duree": 5,
+        "ProbabiliteApparition": 0.3
+      },
+      {
+        "Nom": "Mildiou",
+        "NiveauRisque": 3,
+        "Duree": 7,
+        "ProbabiliteApparition": 0.4
+      }
+    ],
+    "Productivite": 10,
+    "BesoinEau": 0.5,
+    "BesoinLumineux": 0.8,
+    "Age": 0,
+    "Sante": 100,
+    "EstMort": false,
+    "Taille": 0,
+    "MaladieActuelle": null,
+    "DureeMaladieRestante": 0,
+    "rng": {}
+  }
+]

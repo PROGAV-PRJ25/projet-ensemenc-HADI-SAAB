@@ -15,6 +15,9 @@ public abstract class Plante
     public int Sante { get; protected set; }
     public bool EstMort { get; protected set; }
     public double Taille { get; protected set; }
+    public Maladie? MaladieActuelle { get; protected set; }
+    public int DureeMaladieRestante { get; protected set; }
+    public Random rng { get; set; }
 
 
 
@@ -35,6 +38,7 @@ public abstract class Plante
         Sante = 100;
         EstMort = false;
         Taille = 0;
+        rng = new Random();
     }
 
     public bool ConditionsPalnte(Meteo meteo, Terrain terrain)
@@ -43,23 +47,26 @@ public abstract class Plante
         if (meteo.Temperature >= ZonesTempPreferee.Min() && meteo.Temperature <= ZonesTempPreferee.Max())
         {
             conditionOk++;
-            Sante -= 25;
         }
+        else Sante = Math.Max(Sante - 25, 0);
+
         if (terrain.Type == TerrainPrefere)
         {
             conditionOk++;
-            Sante -= 25;
         }
+        else Sante = Math.Max(Sante - 25, 0);
+
         if (meteo.Pluie >= BesoinEau)
         {
             conditionOk++;
-            Sante -= 25;
         }
+        else Sante = Math.Max(Sante - 25, 0);
+
         if (meteo.Soleil >= BesoinLumineux)
         {
             conditionOk++;
-            Sante -= 25;
         }
+        else Sante = Math.Max(Sante - 25, 0);
 
         conditionOk = conditionOk*25;
         if (conditionOk < 50)
@@ -126,6 +133,41 @@ public abstract class Plante
         }
         return false;
     }
+
+    
+     
+    public void AppliquerMaladie() 
+    { 
+        if (MaladieActuelle != null)
+        {
+            return;
+        }
+        foreach (var maladie in MaladiesPossibles)
+        {
+            if (rng.NextDouble() < maladie.ProbabiliteApparition) 
+            { 
+                MaladieActuelle = maladie; 
+                DureeMaladieRestante = maladie.Duree;
+                Console.WriteLine($"La plante {Nom} est tombée malade : {maladie.Nom}");
+                break; // sorti , car la plante peux attraper une seule maladie
+            } 
+        }
+        
+    }
+
+    public void AppliquerTraitement() // Soigner la plante si elle est malade
+    {
+        if (MaladieActuelle != null)
+        {
+            MaladieActuelle = null;
+            Sante = Math.Min(Sante + 10, 100);
+        }
+        else 
+        {
+            Console.WriteLine($"La plante {Nom} est déjà en bonne santé");
+        }
+    } 
+    
 
   
 
