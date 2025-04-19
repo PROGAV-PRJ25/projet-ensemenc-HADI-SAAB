@@ -4,9 +4,5 @@ public class Comestible : Plante
     {
         
     }
-    public Comestible() : base("", "", new List<string>(), "", new List<double>(), 0, 0, new List<Maladie>(), 0, 0, 0)
-    {
-        // Nécessaire pour la désérialisation
-    }
 
 }

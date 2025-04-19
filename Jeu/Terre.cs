@@ -4,5 +4,4 @@ public class Terre : Terrain
     {
 
     }
-    public Terre() : base("Terre", 0, new List<Plante>()) { }
 }

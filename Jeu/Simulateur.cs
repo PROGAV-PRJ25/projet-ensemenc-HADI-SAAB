@@ -7,7 +7,7 @@ public class Simulateur
         T = t;
     }
 
-    void Semer(Plante p)
+    public void Semer(Plante p)
     {
         if (T.Surface >= p.Espace)
         {
@@ -18,15 +18,14 @@ public class Simulateur
         else 
         {
             Console.WriteLine($"Espace insuffisant dans le terrain pour semer la plante {p.Nom}.");
-        }
-        
-        
+        }    
     }
 
     public void SupprimerPlante(Plante p) //Recolter ou mort
     {
         //Dans la boucle du jeu ajouter les conditions : Estmort ? ou PeutRecolter
         T.Plantes.Remove(p);
+        T.Surface += p.Espace;
         
     }
     
