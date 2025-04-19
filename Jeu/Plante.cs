@@ -110,11 +110,11 @@ public abstract class Plante
     {
         if (EstMort)
         {
-            Console.WriteLine($"La plante {Nom} est déjà mort donc peut pas la pousser");
+            Console.WriteLine($"La plante {Nom} est déjà mort donc tu peux pas la pousser");
         }
-        else if (MaladiesPossibles.Count() != 0)
+        else if (MaladieActuelle != null)
         {
-            Console.WriteLine($"La plante {Nom} est malade, donc sa santé ainsi que son taille diminues");
+            Console.WriteLine($"La plante {Nom} est malade, donc sa santé ainsi que son taille diminues, faut la traiter");
             Taille -= 1;
             Sante = Math.Max(Sante - 10, 0);
         }
@@ -167,6 +167,23 @@ public abstract class Plante
             Console.WriteLine($"La plante {Nom} est déjà en bonne santé");
         }
     } 
+
+    public void AfficherEtat()
+    {
+        if (EstMort)
+        {
+            Console.WriteLine($"La plante {Nom} est déjà mort");
+        }
+        else if (MaladieActuelle == null)
+        {
+            Console.WriteLine($"{Nom} | Santé : {Sante}% | Taille : {Taille} | Croissance : {VitesseCroissance}");
+        }
+        else 
+        {
+            Console.WriteLine($"{Nom} | Santé : {Sante}% | Taille : {Taille} | Croissance : {VitesseCroissance} | Maladie : {MaladieActuelle.Nom}");
+        }
+        
+    }
     
 
   

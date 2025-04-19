@@ -23,7 +23,7 @@ Comestible tomate = new Comestible(
     vitesse: 1.0,
     maladies: maladies,
     productivite: 5,
-    besoinEau: 0.6,
+    besoinEau: 0.4,
     besoinLumineux: 0.5
 );
 
@@ -38,7 +38,7 @@ Comestible carotte = new Comestible(
     maladies: maladies,
     productivite: 4,
     besoinEau: 0.5,
-    besoinLumineux: 0.4
+    besoinLumineux: 0.6
 );
 
 
@@ -56,5 +56,19 @@ Console.WriteLine("État des plantes :\n");
 
 foreach (var plante in terrain.Plantes)
 {
-    plante.ConditionsPalnte(meteo, terrain);
+    if (plante.ConditionsPalnte(meteo, terrain))
+    {
+        plante.AfficherEtat();
+        plante.Pousser();
+        plante.AppliquerLumiere(0.5);
+        plante.Arrosser(0.4);
+        Console.WriteLine(plante.PeutRecolter());
+        plante.AppliquerMaladie();
+        plante.AppliquerTraitement();
+        Console.WriteLine();
+        plante.AfficherEtat();
+        Console.WriteLine();
+    }
+    
+    
 }

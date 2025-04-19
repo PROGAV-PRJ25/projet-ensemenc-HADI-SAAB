@@ -21,13 +21,6 @@ public class Simulateur
         }    
     }
 
-    public void SupprimerPlante(Plante p) //Recolter ou mort
-    {
-        //Dans la boucle du jeu ajouter les conditions : Estmort ? ou PeutRecolter
-        T.Plantes.Remove(p);
-        T.Surface += p.Espace;
-        
-    }
     
 
     //Dans la boucle du jeu ajouter 
