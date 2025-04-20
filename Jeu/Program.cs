@@ -18,13 +18,14 @@ Comestible tomate = new Comestible(
     nature: "Comestible",
     saisons: new List<string> { "Printemps", "Été" },
     terrainPrefere: "Terre",
-    zonesTempPreferee: new List<double> { 15, 30 },
+    zonesTemp: (15, 30),
     espace: 0.3,
     vitesse: 1.0,
     maladies: maladies,
     productivite: 5,
     besoinEau: 0.4,
-    besoinLumineux: 0.5
+    besoinLumineux: 0.5,
+    tailleMax: 5
 );
 
 Comestible carotte = new Comestible(
@@ -32,22 +33,23 @@ Comestible carotte = new Comestible(
     nature: "Comestible",
     saisons: new List<string> { "Printemps", "Automne" },
     terrainPrefere: "Terre",
-    zonesTempPreferee: new List<double> { 10, 25 },
+    zonesTemp: (10, 25 ),
     espace: 0.2,
     vitesse: 1.2,
     maladies: maladies,
     productivite: 4,
     besoinEau: 0.5,
-    besoinLumineux: 0.6
+    besoinLumineux: 0.6,
+    tailleMax: 7
 );
 
 
 Terrain terrain = new Terre(
-    surface: 10,
-    plantes: new List<Plante> { tomate, carotte }
+    surface: 10
 );
 
-
+terrain.AjouterPlante(tomate);
+terrain.AjouterPlante(carotte);
 
 Console.WriteLine("Semaine 1 - Météo actuelle :");
 meteo.Afficher();
@@ -56,10 +58,10 @@ Console.WriteLine("État des plantes :\n");
 
 foreach (var plante in terrain.Plantes)
 {
-    if (plante.ConditionsPalnte(meteo, terrain))
+    if (plante.VerifierConditions(meteo, terrain))
     {
         plante.AfficherEtat();
-        plante.Pousser();
+        plante.Pousser(meteo, terrain);
         plante.AppliquerLumiere(0.5);
         plante.Arrosser(0.4);
         Console.WriteLine(plante.PeutRecolter());

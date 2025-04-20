@@ -22,7 +22,7 @@ public class Simulateur
     }
 
     
-
+    //Poser la question au prof : Ajouter une liste des plantes Catalogue, si le joueur a choisi Semer() on lui demander de choisir une plante de cette liste 
     //Dans la boucle du jeu ajouter 
     /*
     public void TourSuivant() 
