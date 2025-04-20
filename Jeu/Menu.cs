@@ -4,11 +4,12 @@ public class Menu
     private string[] options = new string[]
     {
         "Semer une plante",
-        "Arroser une plante",
-        "Arroser toutes les plantes",
-        "Traiter une plante",
+        "Afficher état des plantes",
+        "Passer un tour",
+        //"Arroser toutes les plantes",
+        //"Traiter une plante",
         "Sauvegarder",
-        "Passer au prochain tour",
+        "Charger",
         "Quitter"
     };
 
@@ -47,6 +48,6 @@ public class Menu
 
         } while (key.Key != ConsoleKey.Enter);
 
-        return indexSelectionne;
+        return indexSelectionne + 1;
     }
 }

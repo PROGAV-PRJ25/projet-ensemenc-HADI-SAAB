@@ -239,18 +239,16 @@ public abstract class Plante
 
         if (MaladieActuelle != null)
         {
-            Console.WriteLine($"Maladie      : {MaladieActuelle.Nom} ({DureeMaladieRestante} sem. restantes)");
+            Console.WriteLine($"Maladie          : {MaladieActuelle.Nom} ({DureeMaladieRestante} sem. restantes)");
         }
         else
         {
-            Console.WriteLine("Maladie       : Aucune");
+            Console.WriteLine("Maladie          : Aucune");
         }
 
         Console.WriteLine($"État             : {(EstMort ? "Morte" : "Vivante")}");
         Console.WriteLine("------------------------------\n");
     }
-    
-
-  
+     
 
 }

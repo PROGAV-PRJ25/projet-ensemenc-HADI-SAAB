@@ -1,23 +1,24 @@
 public class Meteo
 {
-    public double Temperature { get; protected set; }
+    public double Pluie { get; set; }      // entre 0.0 et 1.0
+    public double Soleil { get; set; }     // entre 0.0 et 1.0
+    public double Temperature { get; set; }
     public string Condition { get; protected set; }
-    public double Pluie { get; protected set; }        // entre 0.0 et 1.0
-    public double Soleil { get; protected set; }       // entre 0.0 et 1.0
-    public bool Urgence => Condition == "Grele" || Condition == "Tempete"; 
+    public bool Urgence => Condition == "Grele" || Condition == "Tempete"; // en °C
 
-    public Meteo(double temperature, string condition, double soleil, double pluie = 0)
+    public static Meteo Generer()
     {
-        Temperature = temperature;
-        Condition = condition;
-        Soleil = soleil;
-        Pluie = pluie;
+        Random rng = new Random();
+        return new Meteo
+        {
+            Pluie = Math.Round(rng.NextDouble(), 2),
+            Soleil = Math.Round(rng.NextDouble(), 2),
+            Temperature = rng.Next(-5, 36)
+        };
     }
 
-    public void Afficher()
+    public override string ToString()
     {
-        Console.WriteLine($"Condition : {Condition}, Température : {Temperature}°C, Eau : {Pluie}   Soleil : {Soleil}\n");
-        
+        return $"Soleil : {Soleil}, Pluie : {Pluie}, Température : {Temperature}°C";
     }
-
 }
