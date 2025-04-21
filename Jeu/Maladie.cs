@@ -1,11 +1,15 @@
-public class Maladies
+public class Maladie
 {
-    public int NiveauRisque {get; set;}
-   public string Nom {get; set;}
-   public Maladies(int niveauRisque, string nom)
-   {
-    Nom = nom;
-    NiveauRisque = niveauRisque;
-   }
+    public string Nom { get; protected set; }
+    public int NiveauRisque { get; protected set;}
+    public int Duree { get; protected set; }
+
+
+    public Maladie(string nom, int niveauRisque, int duree)
+    {
+        Nom = nom;
+        NiveauRisque = niveauRisque;
+        Duree = duree;
+    }
    
 }

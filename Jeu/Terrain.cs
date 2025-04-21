@@ -1,13 +1,19 @@
 public class Terrain
 {
-    public double Surface {get; set;}
-   public List<string> Plantes {get; set; }
-   public string Type {get; set;}
-   public Terrain(double surface, List<string> plantes, string type)
+    public string Type { get; protected set; }
+    public double Surface { get; protected set; }
+    public List<Plante>? Plantes {get; protected set; }
+
+   public Terrain(string type, double surface,  List<Plante> plantes)
    {
-    Surface = surface;
-    Plantes = plantes; 
-    Type = type;
+        Type = type;
+        Surface = surface;
+        Plantes = plantes; 
+   }
+
+   public void AjouterPlante(Plante plante)
+   {
+        Plantes.Add(plante);
    }
    
 }

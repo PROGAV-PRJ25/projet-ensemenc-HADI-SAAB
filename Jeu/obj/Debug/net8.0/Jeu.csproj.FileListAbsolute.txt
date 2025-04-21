@@ -1,0 +1,15 @@
+C:\Users\R M\Documents\Projet C#\projet-ensemenc-saab-hadi\Jeu\bin\Debug\net8.0\Jeu.exe
+C:\Users\R M\Documents\Projet C#\projet-ensemenc-saab-hadi\Jeu\bin\Debug\net8.0\Jeu.deps.json
+C:\Users\R M\Documents\Projet C#\projet-ensemenc-saab-hadi\Jeu\bin\Debug\net8.0\Jeu.runtimeconfig.json
+C:\Users\R M\Documents\Projet C#\projet-ensemenc-saab-hadi\Jeu\bin\Debug\net8.0\Jeu.dll
+C:\Users\R M\Documents\Projet C#\projet-ensemenc-saab-hadi\Jeu\bin\Debug\net8.0\Jeu.pdb
+C:\Users\R M\Documents\Projet C#\projet-ensemenc-saab-hadi\Jeu\obj\Debug\net8.0\Jeu.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\R M\Documents\Projet C#\projet-ensemenc-saab-hadi\Jeu\obj\Debug\net8.0\Jeu.AssemblyInfoInputs.cache
+C:\Users\R M\Documents\Projet C#\projet-ensemenc-saab-hadi\Jeu\obj\Debug\net8.0\Jeu.AssemblyInfo.cs
+C:\Users\R M\Documents\Projet C#\projet-ensemenc-saab-hadi\Jeu\obj\Debug\net8.0\Jeu.csproj.CoreCompileInputs.cache
+C:\Users\R M\Documents\Projet C#\projet-ensemenc-saab-hadi\Jeu\obj\Debug\net8.0\Jeu.sourcelink.json
+C:\Users\R M\Documents\Projet C#\projet-ensemenc-saab-hadi\Jeu\obj\Debug\net8.0\Jeu.dll
+C:\Users\R M\Documents\Projet C#\projet-ensemenc-saab-hadi\Jeu\obj\Debug\net8.0\refint\Jeu.dll
+C:\Users\R M\Documents\Projet C#\projet-ensemenc-saab-hadi\Jeu\obj\Debug\net8.0\Jeu.pdb
+C:\Users\R M\Documents\Projet C#\projet-ensemenc-saab-hadi\Jeu\obj\Debug\net8.0\Jeu.genruntimeconfig.cache
+C:\Users\R M\Documents\Projet C#\projet-ensemenc-saab-hadi\Jeu\obj\Debug\net8.0\ref\Jeu.dll
