@@ -219,6 +219,7 @@ public abstract class Plante
         {
             MaladieActuelle = null;
             Sante = Math.Min(Sante + 10, 100);
+            Console.WriteLine($"{Nom} est traitée");
         }
         else 
         {

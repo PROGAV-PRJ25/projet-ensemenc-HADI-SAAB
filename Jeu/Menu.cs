@@ -4,10 +4,11 @@ public class Menu
     private string[] options = new string[]
     {
         "Semer une plante",
+        "Arroser une plante",
+        "Arroser toutes les plantes",
+        "Traiter une plante",
         "Afficher état des plantes",
         "Passer un tour",
-        //"Arroser toutes les plantes",
-        //"Traiter une plante",
         "Sauvegarder",
         "Charger",
         "Quitter"

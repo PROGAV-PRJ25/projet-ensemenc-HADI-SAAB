@@ -18,62 +18,99 @@ List<Plante> catalogue = new List<Plante>
 Simulateur simulateur = new Simulateur(terrain);
 
 Menu menu = new Menu();
-
-// Boucle principale
+int tour = 0;
 while (true)
 {
-    Console.Clear();
-
     int choix = menu.AfficherMenu();
 
     switch (choix)
     {
-        case 1:
-            Console.WriteLine("\nCatalogue des plantes :");
-            for (int i = 0; i < catalogue.Count; i++)
-                Console.WriteLine($"{i + 1}. {catalogue[i].Nom}");
-
-            Console.Write("Choisissez une plante à semer : ");
-            if (int.TryParse(Console.ReadLine(), out int index) && index >= 1 && index <= catalogue.Count)
+        case 1: 
+            Console.WriteLine("Voici la liste des plantes : ");
+            for (int i = 0; i < catalogue.Count(); i++)
             {
-                Plante planteChoisie = catalogue[index - 1];
-                simulateur.Semer(planteChoisie); // Ajoute au terrain
+                Console.WriteLine($"{i + 1} : {catalogue[i].Nom}");
             }
-            else
-                Console.WriteLine("Choix invalide.");
+            Console.Write("Choisissez une plante à semer : ");
+            int index = int.Parse(Console.ReadLine());
+            simulateur.Semer(catalogue[index - 1]);
             break;
-
+        
         case 2:
-            foreach (var p in terrain.Plantes)
-                p.AfficherEtat();
+            Console.WriteLine("De quelle quantité voulez vous arroser la plante ? (entre 0.0-1.0)");
+            double quantite = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("Quelle Plante voulez vs arroser ?");
+            for (int i = 0; i < terrain.Plantes.Count(); i++)
+            {
+                Console.WriteLine($"{i + 1} : {terrain.Plantes[i].Nom}");
+            }
+            int indice = int.Parse(Console.ReadLine());
+            terrain.Plantes[indice - 1].Arrosser(quantite);
             Console.WriteLine("Appuyez sur une touche pour continuer...");
             Console.ReadKey();
             break;
 
         case 3:
-            Meteo meteo = Meteo.Generer(); // génère météo aléatoire
-            Console.WriteLine($"\nSoleil : {meteo.Soleil}, Pluie : {meteo.Pluie}, Température : {meteo.Temperature}°C");
-            foreach (var p in terrain.Plantes.ToList()) // ToList() pour éviter modification collection
+            Console.WriteLine("De quelle quantité voulez vous arroser les plantes ? (entre 0.0-1.0)");
+            double quant = Convert.ToDouble(Console.ReadLine());
+            foreach (var p in terrain.Plantes)
             {
-                p.Pousser(meteo, terrain);
-                if (p.EstMort)
-                    terrain.SupprimerPlante(p);
+                p.Arrosser(quant);
             }
-            Console.WriteLine("Tour terminé !");
+            Console.WriteLine("Appuyez sur une touche pour continuer...");
             Console.ReadKey();
             break;
 
         case 4:
-            //simulateur.Sauvegarder();
+            Console.WriteLine("Quelle plante voulez vous traiter ?");
+            for (int i = 0; i < terrain.Plantes.Count(); i++)
+            {
+                Console.WriteLine($"{i + 1}: {terrain.Plantes[i].Nom}");
+            }
+            int n = int.Parse(Console.ReadLine());
+            terrain.Plantes[n - 1].AppliquerTraitement();
+            Console.WriteLine("Appuyez sur une touche pour continuer...");
             Console.ReadKey();
             break;
 
         case 5:
-            //simulateur.Charger();
+            Console.WriteLine($"Semaine {tour} :");
+            foreach (var p in terrain.Plantes)
+            {
+                p.AfficherEtat();
+            }
+            Console.WriteLine("Appuyez sur une touche pour continuer...");
             Console.ReadKey();
             break;
 
         case 6:
+            tour++;
+            Meteo meteo = Meteo.Generer();
+            Console.WriteLine(meteo);
+            foreach (var p in terrain.Plantes.ToList())
+            {
+                p.Pousser(meteo, terrain);
+                if (p.EstMort)
+                {
+                    terrain.SupprimerPlante(p);
+                }
+            }
+            Console.WriteLine("Tour terminé");
+            Console.WriteLine("Appuyez sur une touche pour continuer...");
+            Console.ReadKey();
+            break;
+
+        case 7:
+            //simulateur.Sauvegarder();
+            Console.ReadKey();
+            break;
+
+        case 8:
+            //simulateur.Charger();
+            Console.ReadKey();
+            break;
+
+        case 9:
             Console.WriteLine("Au revoir !");
             return;
     }
