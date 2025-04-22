@@ -45,7 +45,22 @@ public abstract class Plante
         rng = new Random();
     }
 
-     public bool VerifierConditions(Meteo meteo, Terrain terrain)
+    public void ModifierSnate(int data)
+    {
+        if (data > 0)
+        {
+            Sante = Math.Min(Sante + data, 100);
+        }
+        else
+        {
+            Sante = Math.Max(Sante + data, 0);
+        }
+        if (Sante == 0)
+        {
+            EstMort = true;
+        }
+    }
+    public bool VerifierConditions(Meteo meteo, Terrain terrain)
     {
         if (EstMort) return false;
 
@@ -55,25 +70,25 @@ public abstract class Plante
         if (meteo.Temperature >= ZonesTempPreferee.Min && meteo.Temperature <= ZonesTempPreferee.Max)
             conditionScore += 25;
         else
-            Sante = Math.Max(Sante - 15, 0);
+            ModifierSnate(-15);
 
         // Terrain
         if (terrain.Type == TerrainPrefere)
             conditionScore += 25;
         else
-            Sante = Math.Max(Sante - 10, 0);
+            ModifierSnate(-10);
 
         // Eau
         if (meteo.Pluie >= BesoinEau) // ou mieux meteo.Pluie >= BesoinEau*0.7 : Tolérance de 30%
             conditionScore += 25;
         else
-            Sante = Math.Max(Sante - (int)((BesoinEau - meteo.Pluie) * 20), 0);
+            ModifierSnate(-(int)((BesoinEau - meteo.Pluie) * 20));
 
         // Lumière
         if (meteo.Soleil >= BesoinLumineux) //meme question pour l'eau 
             conditionScore += 25;
         else
-            Sante = Math.Max(Sante - (int)((BesoinLumineux - meteo.Soleil) * 20), 0);
+            ModifierSnate(-(int)(BesoinLumineux - meteo.Soleil) * 20);
 
         if (conditionScore < 50)
         {
@@ -94,12 +109,12 @@ public abstract class Plante
     {
         if (quantite < BesoinEau)
         {
-            Sante = Math.Max(Sante - 10, 0);
+            ModifierSnate(-10);
             Console.WriteLine($"{Nom} n'a pas assez d'eau. La santé a diminué.");
         }
         else 
         {
-            Sante = Math.Min(Sante + 10, 100);
+            ModifierSnate(10);
             Console.WriteLine($"{Nom} a été correctement arrosée.");
         }
     }
@@ -108,12 +123,12 @@ public abstract class Plante
     {
         if (quantite < BesoinLumineux)
         {
-            Sante = Math.Max(Sante - 10, 0);
+            ModifierSnate(-10);
             Console.WriteLine($"{Nom} n'a pas assez de lumière. Sa santé a diminué.");
         }
         else
         {
-            Sante = Math.Min(Sante + 10, 100);
+            ModifierSnate(10);
             Console.WriteLine($"{Nom} a eu correctement la lumière.");
         }
     }
@@ -142,7 +157,7 @@ public abstract class Plante
             else
             {
                 Taille -= 0.5;
-                Sante = Math.Max(Sante - 15, 0);
+                ModifierSnate(-15);
                 Console.WriteLine($"{Nom} souffre de {MaladieActuelle.Nom}.");
                 return;
             }
@@ -160,11 +175,11 @@ public abstract class Plante
         if (terrain.ADesMauvaiseHerbes)
         {
             croissanceBase *= 0.8;
-            Sante = Math.Max(Sante - 5, 0);
+            ModifierSnate(-5);
             Console.WriteLine($"{Nom} est génée par des mauvaises herbes !");
         }
         Taille += croissanceBase;
-        Sante = Math.Min(Sante + 2, 100);
+        ModifierSnate(2);
 
         // Chance d'attraper une maladie
         AppliquerMaladie();
@@ -218,7 +233,7 @@ public abstract class Plante
         if (MaladieActuelle != null)
         {
             MaladieActuelle = null;
-            Sante = Math.Min(Sante + 10, 100);
+            ModifierSnate(10);
             Console.WriteLine($"{Nom} est traitée");
         }
         else 

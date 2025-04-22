@@ -47,7 +47,8 @@ public class Menu
                 indexSelectionne = (indexSelectionne == options.Length - 1) ? 0 : indexSelectionne + 1;
             }
 
-        } while (key.Key != ConsoleKey.Enter);
+        } 
+        while (key.Key != ConsoleKey.Enter);
 
         return indexSelectionne + 1;
     }
