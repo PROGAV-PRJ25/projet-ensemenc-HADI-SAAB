@@ -128,6 +128,7 @@ public abstract class Plante
             Console.WriteLine($"{Nom} a débordé à cause de l'arrosage. la santé a diminiué");
         }
     }
+ 
 
     public virtual void AppliquerLumiere(double quantite)
     {
