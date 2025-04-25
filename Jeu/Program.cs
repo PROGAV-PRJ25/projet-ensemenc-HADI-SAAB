@@ -1,63 +1,117 @@
-﻿using System;
-using System.Collections.Generic;
+﻿Console.OutputEncoding = System.Text.Encoding.UTF8;
 
+// Créer un terrain
+Terrain terrain = new Terre( 5); // 5m²
 
-Meteo meteo = new Meteo(
-    temperature: 18,
-    condition: "Pluie",
-    soleil: 0.4,
-    pluie: 0.8
-);
+// Créer quelques maladies
+Maladie mildiou = new Maladie("Mildiou", 7, 3, 0.4);
+Maladie rouille = new Maladie("Rouille", 5, 2, 0.5);
 
-
-List<Maladie> maladies = new List<Maladie>()
+// Créer un catalogue de plantes
+List<Plante> catalogue = new List<Plante>
 {
-    new Maladie("Mildiou", 3, 7)
+    new Comestible("Tomate", "Légume", new List<string>{"Été"}, "Terre", (15, 30), 1, 1.2, new List<Maladie>{mildiou}, 3, 0.6, 0.8, 5),
+    new Comestible("Carotte", "Légume", new List<string>{"Printemps"}, "Terre", (10, 25), 0.8, 1.0, new List<Maladie>{rouille}, 2, 0.5, 0.7, 4),
 };
 
+// Créer le simulateur
+Simulateur simulateur = new Simulateur(terrain);
 
-Plante tomate = new Plante(
-    nom: "Tomate",
-    nature: "Comestible",
-    saisons: new List<string> { "Printemps", "Été" },
-    terrainPrefere: "Terre",
-    zonesTempPreferee: new List<double> { 15, 30 },
-    espace: 0.3,
-    vitesse: 1.0,
-    maladies: maladies,
-    productivite: 5,
-    besoinEau: 0.6,
-    besoinLumineux: 0.5
-);
-
-Plante carotte = new Plante(
-    nom: "Carotte",
-    nature: "Comestible",
-    saisons: new List<string> { "Printemps", "Automne" },
-    terrainPrefere: "Terre",
-    zonesTempPreferee: new List<double> { 10, 25 },
-    espace: 0.2,
-    vitesse: 1.2,
-    maladies: maladies,
-    productivite: 4,
-    besoinEau: 0.5,
-    besoinLumineux: 0.4
-);
-
-
-Terrain terrain = new Terrain(
-    type: "Terre",
-    surface: 10,
-    plantes: new List<Plante> { tomate, carotte }
-);
-
-
-Console.WriteLine("Semaine 1 - Météo actuelle :");
-meteo.Afficher();
-
-Console.WriteLine("État des plantes :\n");
-
-foreach (var plante in terrain.Plantes)
+Menu menu = new Menu();
+int tour = 0;
+while (true)
 {
-    plante.ConditionsPalnte(meteo, terrain);
+    int choix = menu.AfficherMenu();
+
+    switch (choix)
+    {
+        case 1: 
+            Console.WriteLine("Voici la liste des plantes : ");
+            for (int i = 0; i < catalogue.Count(); i++)
+            {
+                Console.WriteLine($"{i + 1} : {catalogue[i].Nom}");
+            }
+            Console.Write("Choisissez une plante à semer : ");
+            int index = int.Parse(Console.ReadLine());
+            simulateur.Semer(catalogue[index - 1]);
+            break;
+        
+        case 2:
+            Console.WriteLine("De quelle quantité voulez vous arroser la plante ? (entre 0.0-1.0)");
+            double quantite = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("Quelle Plante voulez vs arroser ?");
+            for (int i = 0; i < terrain.Plantes.Count(); i++)
+            {
+                Console.WriteLine($"{i + 1} : {terrain.Plantes[i].Nom}");
+            }
+            int indice = int.Parse(Console.ReadLine());
+            terrain.Plantes[indice - 1].Arrosser(quantite);
+            Console.WriteLine("Appuyez sur une touche pour continuer...");
+            Console.ReadKey();
+            break;
+
+        case 3:
+            Console.WriteLine("De quelle quantité voulez vous arroser les plantes ? (entre 0.0-1.0)");
+            double quant = Convert.ToDouble(Console.ReadLine());
+            foreach (var p in terrain.Plantes)
+            {
+                p.Arrosser(quant);
+            }
+            Console.WriteLine("Appuyez sur une touche pour continuer...");
+            Console.ReadKey();
+            break;
+
+        case 4:
+            Console.WriteLine("Quelle plante voulez vous traiter ?");
+            for (int i = 0; i < terrain.Plantes.Count(); i++)
+            {
+                Console.WriteLine($"{i + 1}: {terrain.Plantes[i].Nom}");
+            }
+            int n = int.Parse(Console.ReadLine());
+            terrain.Plantes[n - 1].AppliquerTraitement();
+            Console.WriteLine("Appuyez sur une touche pour continuer...");
+            Console.ReadKey();
+            break;
+
+        case 5:
+            Console.WriteLine($"Semaine {tour} :");
+            foreach (var p in terrain.Plantes)
+            {
+                p.AfficherEtat();
+            }
+            Console.WriteLine("Appuyez sur une touche pour continuer...");
+            Console.ReadKey();
+            break;
+
+        case 6:
+            tour++;
+            Meteo meteo = Meteo.Generer();
+            Console.WriteLine(meteo);
+            foreach (var p in terrain.Plantes.ToList())
+            {
+                p.Pousser(meteo, terrain);
+                if (p.EstMort)
+                {
+                    terrain.SupprimerPlante(p);
+                }
+            }
+            Console.WriteLine("Tour terminé");
+            Console.WriteLine("Appuyez sur une touche pour continuer...");
+            Console.ReadKey();
+            break;
+
+        case 7:
+            //simulateur.Sauvegarder();
+            Console.ReadKey();
+            break;
+
+        case 8:
+            //simulateur.Charger();
+            Console.ReadKey();
+            break;
+
+        case 9:
+            Console.WriteLine("Au revoir !");
+            return;
+    }
 }
