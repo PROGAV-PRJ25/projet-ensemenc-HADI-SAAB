@@ -20,6 +20,8 @@ public abstract class Plante
     public int DureeMaladieRestante { get; protected set; }
     public int RecoltesRestantes { get; protected set; }
     public Random rng { get; set; }
+    public double MaxEaux{get; protected set; }
+    public double MaxLumiere{get; protected set;}
 
 
 
@@ -43,6 +45,9 @@ public abstract class Plante
         TailleMax = tailleMax;
         RecoltesRestantes = productivite;
         rng = new Random();
+        MaxEaux = 0.99; 
+        MaxLumiere = 0.99; 
+
     }
 
     public void ModifierSnate(int data)
@@ -79,13 +84,13 @@ public abstract class Plante
             ModifierSnate(-10);
 
         // Eau
-        if (meteo.Pluie >= BesoinEau) // ou mieux meteo.Pluie >= BesoinEau*0.7 : Tolérance de 30%
+        if ( meteo.Pluie < MaxEaux && meteo.Pluie >= BesoinEau) // ou mieux meteo.Pluie >= BesoinEau*0.7 : Tolérance de 30%
             conditionScore += 25;
         else
             ModifierSnate(-(int)((BesoinEau - meteo.Pluie) * 20));
 
         // Lumière
-        if (meteo.Soleil >= BesoinLumineux) //meme question pour l'eau 
+        if ( meteo.Soleil < MaxLumiere && meteo.Soleil >= BesoinLumineux) //meme question pour l'eau 
             conditionScore += 25;
         else
             ModifierSnate(-(int)(BesoinLumineux - meteo.Soleil) * 20);
@@ -112,10 +117,15 @@ public abstract class Plante
             ModifierSnate(-10);
             Console.WriteLine($"{Nom} n'a pas assez d'eau. La santé a diminué.");
         }
-        else 
+        else if (quantite <= MaxEaux && quantite >= BesoinEau)
         {
             ModifierSnate(10);
             Console.WriteLine($"{Nom} a été correctement arrosée.");
+        }
+        else 
+        {
+            ModifierSnate(-10);
+            Console.WriteLine($"{Nom} a débordé à cause de l'arrosage. la santé a diminiué");
         }
     }
 
@@ -126,10 +136,15 @@ public abstract class Plante
             ModifierSnate(-10);
             Console.WriteLine($"{Nom} n'a pas assez de lumière. Sa santé a diminué.");
         }
-        else
+        else if ( quantite <= MaxLumiere && quantite >= BesoinLumineux)
         {
             ModifierSnate(10);
             Console.WriteLine($"{Nom} a eu correctement la lumière.");
+        }
+        else 
+        {
+            ModifierSnate(-10);
+            Console.WriteLine($"{Nom} a débordé à cause de la lumiére. Sa santé a diminué.");
         }
     }
 
@@ -170,7 +185,7 @@ public abstract class Plante
         if (terrain.Type == TerrainPrefere)
             croissanceBase *= 1.1;
         
-        if (meteo.Pluie > BesoinEau * 1.2) // Trop d'eau
+        if (meteo.Pluie > MaxEaux       ) // Trop d'eau
             croissanceBase *= 0.8;
         if (terrain.ADesMauvaiseHerbes)
         {

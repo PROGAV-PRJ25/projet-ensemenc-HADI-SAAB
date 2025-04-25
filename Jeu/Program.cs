@@ -6,12 +6,13 @@ Terrain terrain = new Terre( 5); // 5m²
 // Créer quelques maladies
 Maladie mildiou = new Maladie("Mildiou", 7, 3, 0.4);
 Maladie rouille = new Maladie("Rouille", 5, 2, 0.5);
-
+Maladie cochenille = new Maladie("Cochenille", 5, 4, 0.6);
 // Créer un catalogue de plantes
 List<Plante> catalogue = new List<Plante>
 {
-    new Comestible("Tomate", "Légume", new List<string>{"Été"}, "Terre", (15, 30), 1, 1.2, new List<Maladie>{mildiou}, 3, 0.6, 0.8, 5),
-    new Comestible("Carotte", "Légume", new List<string>{"Printemps"}, "Terre", (10, 25), 0.8, 1.0, new List<Maladie>{rouille}, 2, 0.5, 0.7, 4),
+    new Comestible("Tomate 🍅 ", "Légume", new List<string>{"Été"}, "Terre", (15, 30), 1, 1.2, new List<Maladie>{mildiou}, 3, 0.6, 0.8, 5),
+    new Comestible("Carotte 🥕 ", "Légume", new List<string>{"Printemps"}, "Terre", (10, 25), 0.8, 1.0, new List<Maladie>{rouille}, 2, 0.5, 0.7, 4),
+    new Comestible("Cactus 🌵", "Cactaceae", new List<string> {"Été"}, "Sable", (10, 40), 0.3, 0.2,  new List<Maladie> {cochenille}, 2, 0.2, 0.9, 1.5),
 };
 
 // Créer le simulateur
@@ -62,7 +63,7 @@ while (true)
             break;
 
         case 4:
-            Console.WriteLine("Quelle plante voulez vous traiter ?");
+            Console.WriteLine("Quelle plante voulez vous traiter  ?");
             for (int i = 0; i < terrain.Plantes.Count(); i++)
             {
                 Console.WriteLine($"{i + 1}: {terrain.Plantes[i].Nom}");

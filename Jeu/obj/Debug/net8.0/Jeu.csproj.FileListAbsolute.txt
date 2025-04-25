@@ -21,3 +21,10 @@ C:/Users/R M/Documents/Projet C#/projet-ensemenc-saab-hadi/Jeu/obj/Debug/net8.0/
 /Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/obj/Debug/net8.0/Jeu.dll
 /Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/obj/Debug/net8.0/refint/Jeu.dll
 /Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/obj/Debug/net8.0/Jeu.pdb
+/Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/bin/Debug/net8.0/Jeu
+/Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/bin/Debug/net8.0/Jeu.deps.json
+/Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/bin/Debug/net8.0/Jeu.runtimeconfig.json
+/Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/bin/Debug/net8.0/Jeu.dll
+/Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/bin/Debug/net8.0/Jeu.pdb
+/Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/obj/Debug/net8.0/Jeu.genruntimeconfig.cache
+/Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/obj/Debug/net8.0/ref/Jeu.dll
