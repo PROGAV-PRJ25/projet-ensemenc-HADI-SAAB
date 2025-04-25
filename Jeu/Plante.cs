@@ -191,7 +191,7 @@ public abstract class Plante
         {
             croissanceBase *= 0.8;
             ModifierSnate(-5);
-            Console.WriteLine($"{Nom} est génée par des mauvaises herbes !");
+            Console.WriteLine($"{Nom} est génée par des mauvaises herbes ‼️‼️!");
         }
         Taille += croissanceBase;
         ModifierSnate(2);
@@ -253,7 +253,7 @@ public abstract class Plante
         }
         else 
         {
-            Console.WriteLine($"{Nom} est déjà en bonne santé");
+            Console.WriteLine($"{Nom} est déjà en bonne santé 🥳 ");
         }
     } 
 
@@ -270,7 +270,7 @@ public abstract class Plante
 
         if (MaladieActuelle != null)
         {
-            Console.WriteLine($"Maladie          : {MaladieActuelle.Nom} ({DureeMaladieRestante} sem. restantes)");
+            Console.WriteLine($"Maladie     🦠     : {MaladieActuelle.Nom} ({DureeMaladieRestante} sem. restantes)");
         }
         else
         {

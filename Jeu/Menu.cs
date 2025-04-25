@@ -3,15 +3,15 @@ public class Menu
     private int indexSelectionne = 0;
     private string[] options = new string[]
     {
-        "Semer une plante",
-        "Arroser une plante",
-        "Arroser toutes les plantes",
+        "Semer une plante 🍀 ",
+        "Arroser une plante 🪣 ",
+        "Arroser toutes les plantes 🪣 ",
         "Traiter une plante",
-        "Afficher état des plantes",
+        "Afficher état des plantes 👀 ",
         "Passer un tour",
-        "Sauvegarder",
-        "Charger",
-        "Quitter"
+        "Sauvegarder ✅ ",
+        "Charger ↩️ ",
+        "Quitter ❌ "
     };
 
     public int AfficherMenu()

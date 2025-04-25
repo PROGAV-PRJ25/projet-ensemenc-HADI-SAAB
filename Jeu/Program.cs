@@ -75,7 +75,7 @@ while (true)
             break;
 
         case 5:
-            Console.WriteLine($"Semaine {tour} :");
+            Console.WriteLine($"Semaine 🗓️ {tour} :");
             foreach (var p in terrain.Plantes)
             {
                 p.AfficherEtat();
@@ -116,3 +116,7 @@ while (true)
             return;
     }
 }
+
+// à modifier le prmier tours on est oubligé de choisir Semer une Plante
+// afficher les semaines
+// controler le nombre d'action par tour 

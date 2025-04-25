@@ -19,7 +19,7 @@ public class Meteo
 
     public override string ToString()
     {
-        return $"Soleil : {Soleil}, Pluie : {Pluie}, Température : {Temperature}°C";
+        return $"Soleil 🌞 : {Soleil}, Pluie 🌧️ : {Pluie}, Température 🌡️ : {Temperature}°C";
     }
 }
 
