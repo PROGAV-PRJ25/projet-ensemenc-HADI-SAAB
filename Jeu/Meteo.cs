@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 public class Meteo
 {
     public double Pluie { get; set; }      // entre 0.0 et 1.0
@@ -24,4 +22,4 @@ public class Meteo
         return $"Soleil : {Soleil}, Pluie : {Pluie}, Température : {Temperature}°C";
     }
 }
->>>>>>> fc4e65bd18ea46c3ace07360b1b7b611044938dd
+

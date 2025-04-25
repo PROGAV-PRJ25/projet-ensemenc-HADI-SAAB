@@ -1,28 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\R M\\Documents\\Projet C#\\projet-ensemenc-saab-hadi\\Jeu\\Jeu.csproj": {}
+    "/Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/Jeu.csproj": {}
   },
   "projects": {
-    "C:\\Users\\R M\\Documents\\Projet C#\\projet-ensemenc-saab-hadi\\Jeu\\Jeu.csproj": {
+    "/Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/Jeu.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\R M\\Documents\\Projet C#\\projet-ensemenc-saab-hadi\\Jeu\\Jeu.csproj",
+        "projectUniqueName": "/Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/Jeu.csproj",
         "projectName": "Jeu",
-        "projectPath": "C:\\Users\\R M\\Documents\\Projet C#\\projet-ensemenc-saab-hadi\\Jeu\\Jeu.csproj",
-        "packagesPath": "C:\\Users\\R M\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\R M\\Documents\\Projet C#\\projet-ensemenc-saab-hadi\\Jeu\\obj\\",
+        "projectPath": "/Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/Jeu.csproj",
+        "packagesPath": "/Users/alyaasaab/.nuget/packages/",
+        "outputPath": "/Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\R M\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/alyaasaab/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -61,7 +58,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.406/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
