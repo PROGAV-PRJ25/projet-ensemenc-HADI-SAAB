@@ -1,6 +1,7 @@
 public class Menu
 {
     private int indexSelectionne = 0;
+
     private string[] options = new string[]
     {
         "Semer une plante 🍀 ",
@@ -14,16 +15,37 @@ public class Menu
         "Quitter ❌ "
     };
 
+    private string[] optionsUrgence = new string[]
+    {
+        "Faire du bruit", 
+        "Déployer une bâche",
+        "Fermer une serre",
+        "Acheter un épouvantail",
+        "Reboucher des trous",
+        "Creuser une tranchée"
+    };
+
     public int AfficherMenu()
     {
+        return Afficher(options, "Menu principal");
+    }
+
+    public int AfficherMenuUrgence()
+    {
+        return Afficher(optionsUrgence, "Menu d'urgence");
+    }
+
+    private int Afficher(string[] menuOptions, string titre)
+    {
         ConsoleKeyInfo key;
+        indexSelectionne = 0;
 
         do
         {
             Console.Clear();
             Console.WriteLine("===== Menu =====\n");
 
-            for (int i = 0; i < options.Length; i++)
+            for (int i = 0; i < menuOptions.Length; i++)
             {
                 if (i == indexSelectionne)
                 {
@@ -31,8 +53,7 @@ public class Menu
                     Console.ForegroundColor = ConsoleColor.Black;
                 }
 
-                Console.WriteLine(options[i]);
-
+                Console.WriteLine(menuOptions[i]);
                 Console.ResetColor();
             }
 
@@ -40,15 +61,14 @@ public class Menu
 
             if (key.Key == ConsoleKey.UpArrow)
             {
-                indexSelectionne = (indexSelectionne == 0) ? options.Length - 1 : indexSelectionne - 1;
+                indexSelectionne = (indexSelectionne == 0) ? menuOptions.Length - 1 : indexSelectionne - 1;
             }
             else if (key.Key == ConsoleKey.DownArrow)
             {
-                indexSelectionne = (indexSelectionne == options.Length - 1) ? 0 : indexSelectionne + 1;
+                indexSelectionne = (indexSelectionne == menuOptions.Length - 1) ? 0 : indexSelectionne + 1;
             }
 
-        } 
-        while (key.Key != ConsoleKey.Enter);
+        } while (key.Key != ConsoleKey.Enter);
 
         return indexSelectionne + 1;
     }
