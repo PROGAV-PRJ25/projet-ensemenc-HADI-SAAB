@@ -122,7 +122,6 @@ while (true)
             Console.WriteLine("Au revoir !");
             return;
     }
-     
 }
 
 // à modifier le prmier tours on est oubligé de choisir Semer une Plante

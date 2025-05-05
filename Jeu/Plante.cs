@@ -193,7 +193,7 @@ public abstract class Plante
         if (terrain.Type == TerrainPrefere)
             croissanceBase *= 1.1;
         
-        if (meteo.Pluie > MaxEaux       ) // Trop d'eau
+        if (meteo.Pluie > MaxEaux ) // Trop d'eau
             croissanceBase *= 0.8;
         if (terrain.ADesMauvaiseHerbes)
         {
