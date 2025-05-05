@@ -22,6 +22,7 @@ public abstract class Plante
     public Random rng { get; set; }
     public double MaxEaux{get; protected set; }
     public double MaxLumiere{get; protected set;}
+    
 
 
 
@@ -45,8 +46,8 @@ public abstract class Plante
         TailleMax = tailleMax;
         RecoltesRestantes = productivite;
         rng = new Random();
-        MaxEaux = 0.99; 
-        MaxLumiere = 0.99; 
+        MaxEaux = 0.99;
+        MaxLumiere = 0.99;
 
     }
 
@@ -65,7 +66,7 @@ public abstract class Plante
             EstMort = true;
         }
     }
-    public bool VerifierConditions(Meteo meteo, Terrain terrain)
+    public bool VerifierConditions(Meteo meteo, Terrain terrain, Animaux animal )
     {
         if (EstMort) return false;
 
@@ -95,12 +96,18 @@ public abstract class Plante
         else
             ModifierSnate(-(int)(BesoinLumineux - meteo.Soleil) * 20);
 
-        if (conditionScore < 50)
+        // animal en train de manger (un animal impacte la santé de la plante)
+        if (animal.NiveauDeRisqueAnimal > animal.NiveauDeRisqueAnimalMax)
         {
-            EstMort = true;
-            Sante = 0;
-            return false;
+            conditionScore += 25; 
         }
+
+        if (conditionScore < 50)
+            {
+                EstMort = true;
+                Sante = 0;
+                return false;
+            }
 
         // Bonus de croissance si conditions optimales
         if (conditionScore > 90)
@@ -149,7 +156,7 @@ public abstract class Plante
         }
     }
 
-    public virtual void Pousser(Meteo meteo, Terrain terrain)
+    public virtual void Pousser(Meteo meteo, Terrain terrain, Animaux animal)
     {
         if (EstMort)
         {
@@ -157,7 +164,7 @@ public abstract class Plante
             return;
         }
 
-        if (!VerifierConditions(meteo, terrain))
+        if (!VerifierConditions(meteo, terrain, animal))
             return;
 
         Age++;

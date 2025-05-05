@@ -88,10 +88,11 @@ while (true)
         case 6:
             tour++;
             Meteo meteo = Meteo.Generer();
+            Animaux animaux = Animaux.GenererAnimaux();
             Console.WriteLine(meteo);
             foreach (var p in terrain.Plantes.ToList())
             {
-                p.Pousser(meteo, terrain);
+                p.Pousser(meteo, terrain, animaux);
                 if (p.EstMort)
                 {
                     terrain.SupprimerPlante(p);
