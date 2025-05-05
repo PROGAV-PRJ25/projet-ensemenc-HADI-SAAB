@@ -18,6 +18,7 @@ List<Plante> catalogue = new List<Plante>
     new Comestible("Pastèque 🍉","Fruit",new List<string> { "Été", "Fin du printemps" },"Sable",(20, 35),1.5,0.3,new List<Maladie>{fongique},4,5.0,8.0,3.0),
     new Comestible("Fraise 🍓","Fruit",new List<string> { "Printemps", "Été" }, "Sol riche, frais et bien drainé",(15, 25), 0.3,0.4, new List<Maladie>{botrytis},20,2.0,6.0,0.25),
 
+
 };
 
 // Créer le simulateur
@@ -122,6 +123,7 @@ while (true)
             Console.WriteLine("Au revoir !");
             return;
     }
+     
 }
 
 // à modifier le prmier tours on est oubligé de choisir Semer une Plante
