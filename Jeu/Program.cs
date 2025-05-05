@@ -91,8 +91,7 @@ void PasserTour()
         }
     }
     Console.WriteLine("Tour terminé");
-    AfficherGrille(grille);
-
+    
     nbActions = 3;
     Console.WriteLine("Appuyez sur une touche pour continuer...");
     Console.ReadKey();
@@ -220,6 +219,7 @@ while (true)
         }
         else
         {
+            Console.ForegroundColor = ConsoleColor.Red; 
             Console.WriteLine("Le nombre des actions possibles par tours est atteint ! ");
             PasserTour();
         }
