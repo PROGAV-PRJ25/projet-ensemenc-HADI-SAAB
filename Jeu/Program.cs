@@ -24,9 +24,10 @@ while (true)
 {
     int choix = menu.AfficherMenu();
 
+
     switch (choix)
     {
-        case 1: 
+        case 1:
             Console.WriteLine("Voici la liste des plantes : ");
             for (int i = 0; i < catalogue.Count(); i++)
             {
@@ -36,7 +37,7 @@ while (true)
             int index = int.Parse(Console.ReadLine());
             simulateur.Semer(catalogue[index - 1]);
             break;
-        
+
         case 2:
             Console.WriteLine("De quelle quantité voulez vous arroser la plante ? (entre 0.0-1.0)");
             double quantite = Convert.ToDouble(Console.ReadLine());
@@ -115,6 +116,7 @@ while (true)
             Console.WriteLine("Au revoir !");
             return;
     }
+     
 }
 
 // à modifier le prmier tours on est oubligé de choisir Semer une Plante
