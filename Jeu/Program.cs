@@ -1,4 +1,6 @@
-﻿Console.OutputEncoding = System.Text.Encoding.UTF8;
+﻿using System.Threading.Channels;
+
+Console.OutputEncoding = System.Text.Encoding.UTF8;
 
 // Créer un terrain
 Terrain terrain = new Terre( 5); // 5m²
@@ -23,28 +25,108 @@ List<Plante> catalogue = new List<Plante>
 
 // Créer le simulateur
 Simulateur simulateur = new Simulateur(terrain);
+int largeurGrille = 5;
+int hauteurGrille = 5;
+string[,] grille = new string[hauteurGrille, largeurGrille];
 
+// Initialisation de la grille vide
+for (int y = 0; y < hauteurGrille; y++)
+{
+    for (int x = 0; x < largeurGrille; x++)
+    {
+        grille[y, x] = "[   ]";
+    }
+}
+void AfficherGrille(string[,] grille)
+{
+    Console.WriteLine("\n🌱 État du terrain :");
+    for (int y = 0; y < grille.GetLength(0); y++)
+    {
+        for (int x = 0; x < grille.GetLength(1); x++)
+        {
+            Console.Write(grille[y, x]);
+        }
+        Console.WriteLine();
+    }
+}
+
+int nbActions = 3;
 Menu menu = new Menu();
 int tour = 0;
+Console.WriteLine("Voici la liste des plantes : ");
+for (int i = 0; i < catalogue.Count(); i++)
+{
+    Console.WriteLine($"{i + 1} : {catalogue[i].Nom}");
+}
+Console.Write("Choisissez une plante à semer : ");
+int index = int.Parse(Console.ReadLine());
+Console.Write("Entrez la ligne (0 à 4) : ");
+int ligne = int.Parse(Console.ReadLine());
+Console.Write("Entrez la colonne (0 à 4) : ");
+int colonne = int.Parse(Console.ReadLine());
+
+if (grille[ligne, colonne] == "[   ]")
+{
+    grille[ligne, colonne] = "[" + catalogue[index - 1].Nom[0] + catalogue[index - 1].Nom[1] + catalogue[index - 1].Nom[2] + "]"; 
+    simulateur.Semer(catalogue[index - 1]);
+}
+else
+{
+    Console.WriteLine("Cette case est déjà occupée !");
+}
+
+
+void PasserTour()
+{
+    tour++;
+    Meteo meteo = Meteo.Generer();
+    Animaux animaux = Animaux.GenererAnimaux();
+    Console.WriteLine(meteo);
+    foreach (var p in terrain.Plantes.ToList())
+    {
+        p.Pousser(meteo, terrain, animaux);
+        if (p.EstMort)
+        {
+            terrain.SupprimerPlante(p);
+        }
+    }
+    Console.WriteLine("Tour terminé");
+    AfficherGrille(grille);
+
+    nbActions = 3;
+    Console.WriteLine("Appuyez sur une touche pour continuer...");
+    Console.ReadKey();
+}
+
+
 while (true)
 {
     int choix = menu.AfficherMenu();
-
-
-    switch (choix)
+    if (choix == 1)
     {
-        case 1:
+        if (nbActions > 0)
+        {
             Console.WriteLine("Voici la liste des plantes : ");
             for (int i = 0; i < catalogue.Count(); i++)
             {
                 Console.WriteLine($"{i + 1} : {catalogue[i].Nom}");
             }
             Console.Write("Choisissez une plante à semer : ");
-            int index = int.Parse(Console.ReadLine());
-            simulateur.Semer(catalogue[index - 1]);
-            break;
+            int indice = int.Parse(Console.ReadLine());
+            simulateur.Semer(catalogue[indice - 1]);
+            nbActions--;
+        }
+        else
+        {
+            Console.WriteLine($"Le nombre des actions possibles par tour est atteint");
+            PasserTour();
 
-        case 2:
+        }
+    }
+    else if (choix == 2)
+    {
+        if (nbActions > 0)
+        {
             Console.WriteLine("De quelle quantité voulez vous arroser la plante ? (entre 0.0-1.0)");
             double quantite = Convert.ToDouble(Console.ReadLine());
             Console.WriteLine("Quelle Plante voulez vs arroser ?");
@@ -54,22 +136,40 @@ while (true)
             }
             int indice = int.Parse(Console.ReadLine());
             terrain.Plantes[indice - 1].Arrosser(quantite);
+            nbActions--;
             Console.WriteLine("Appuyez sur une touche pour continuer...");
             Console.ReadKey();
-            break;
-
-        case 3:
+        }
+        else
+        {
+            Console.WriteLine("Le nombre des actions possibles par tours est atteint ! ");
+            PasserTour();
+        }
+    }
+    else if (choix == 3)
+    {
+        if (nbActions > 0)
+        {
             Console.WriteLine("De quelle quantité voulez vous arroser les plantes ? (entre 0.0-1.0)");
             double quant = Convert.ToDouble(Console.ReadLine());
             foreach (var p in terrain.Plantes)
             {
                 p.Arrosser(quant);
             }
+            nbActions--;
             Console.WriteLine("Appuyez sur une touche pour continuer...");
             Console.ReadKey();
-            break;
-
-        case 4:
+        }
+        else
+        {
+            Console.WriteLine("Le nombre des actions possibles par tours est atteint ! ");
+            PasserTour();
+        }
+    }
+    else if (choix == 4)
+    {
+        if (nbActions > 0)
+        {
             Console.WriteLine("Quelle plante voulez vous traiter  ?");
             for (int i = 0; i < terrain.Plantes.Count(); i++)
             {
@@ -77,54 +177,76 @@ while (true)
             }
             int n = int.Parse(Console.ReadLine());
             terrain.Plantes[n - 1].AppliquerTraitement();
+            nbActions--;
             Console.WriteLine("Appuyez sur une touche pour continuer...");
             Console.ReadKey();
-            break;
-
-        case 5:
+        }
+        else
+        {
+            Console.WriteLine("Le nombre des actions possibles par tours est atteint ! ");
+            PasserTour();
+        }
+    }
+    else if (choix == 5)
+    {
+        if (nbActions > 0)
+        {
             Console.WriteLine($"Semaine 🗓️ {tour} :");
             foreach (var p in terrain.Plantes)
             {
                 p.AfficherEtat();
             }
+            nbActions--;
             Console.WriteLine("Appuyez sur une touche pour continuer...");
             Console.ReadKey();
-            break;
-
-        case 6:
-            tour++;
-            Meteo meteo = Meteo.Generer();
-            Animaux animaux = Animaux.GenererAnimaux();
-            Console.WriteLine(meteo);
-            foreach (var p in terrain.Plantes.ToList())
-            {
-                p.Pousser(meteo, terrain, animaux);
-                if (p.EstMort)
-                {
-                    terrain.SupprimerPlante(p);
-                }
-            }
-            Console.WriteLine("Tour terminé");
-            Console.WriteLine("Appuyez sur une touche pour continuer...");
-            Console.ReadKey();
-            break;
-
-        case 7:
-            //simulateur.Sauvegarder();
-            Console.ReadKey();
-            break;
-
-        case 8:
-            //simulateur.Charger();
-            Console.ReadKey();
-            break;
-
-        case 9:
-            Console.WriteLine("Au revoir !");
-            return;
+        }
+        else
+        {
+            Console.WriteLine("Le nombre des actions possibles par tours est atteint ! ");
+            PasserTour();
+        }
     }
-     
+    else if (choix == 6)
+    {
+        PasserTour();
+    }
+    else if (choix == 7)
+    {
+        if (nbActions > 0)
+        {
+            //simulateur.Sauvegarder();
+            nbActions--;
+            Console.ReadKey();
+        }
+        else
+        {
+            Console.WriteLine("Le nombre des actions possibles par tours est atteint ! ");
+            PasserTour();
+        }
+    }
+    else if (choix == 8)
+    {
+        if (nbActions > 0)
+        {
+            //simulateur.Charger();
+            nbActions--;
+            Console.ReadKey();
+        }
+        else
+        {
+            Console.WriteLine("Le nombre des actions possibles par tours est atteint ! ");
+            PasserTour();
+        }
+    }
+
+    else if (choix == 9)
+    {
+        Console.WriteLine("Au revoir !");
+        return;
+    }
 }
+
+
 
 // à modifier le prmier tours on est oubligé de choisir Semer une Plante
 // afficher les semaines
