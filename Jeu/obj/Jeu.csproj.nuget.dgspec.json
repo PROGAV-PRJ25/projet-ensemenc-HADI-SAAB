@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/Jeu.csproj": {}
+    "H:\\projet-ensemenc-saab-hadi\\Jeu\\Jeu.csproj": {}
   },
   "projects": {
-    "/Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/Jeu.csproj": {
+    "H:\\projet-ensemenc-saab-hadi\\Jeu\\Jeu.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/Jeu.csproj",
+        "projectUniqueName": "H:\\projet-ensemenc-saab-hadi\\Jeu\\Jeu.csproj",
         "projectName": "Jeu",
-        "projectPath": "/Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/Jeu.csproj",
-        "packagesPath": "/Users/alyaasaab/.nuget/packages/",
-        "outputPath": "/Users/alyaasaab/Desktop/ENSemenC/projet-ensemenc-saab-hadi/Jeu/obj/",
+        "projectPath": "H:\\projet-ensemenc-saab-hadi\\Jeu\\Jeu.csproj",
+        "packagesPath": "C:\\Users\\ahadi\\.nuget\\packages\\",
+        "outputPath": "H:\\projet-ensemenc-saab-hadi\\Jeu\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/alyaasaab/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\ahadi\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -58,7 +58,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.406/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.206/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
