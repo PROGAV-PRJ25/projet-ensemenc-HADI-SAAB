@@ -61,28 +61,16 @@ for (int i = 0; i < catalogue.Count(); i++)
 Console.Write("Choisissez une plante à semer : ");
 int index = int.Parse(Console.ReadLine());
 
-simulateur.Semer(catalogue[index - 1]);
+
 Meteo meteo;
 
-Console.Write("Entrez la ligne (0 à 4) : ");
-int ligne = int.Parse(Console.ReadLine());
-Console.Write("Entrez la colonne (0 à 4) : ");
-int colonne = int.Parse(Console.ReadLine());
 
-if (grille[ligne, colonne] == "[   ]")
-{
-    grille[ligne, colonne] = "[" + catalogue[index - 1].Nom[0] + catalogue[index - 1].Nom[1] + catalogue[index - 1].Nom[2] + "]"; 
-    simulateur.Semer(catalogue[index - 1]);
-}
-else
-{
-    Console.WriteLine("Cette case est déjà occupée !");
-}
 
 
 
 void PasserTour()
 {
+    AfficherGrille(grille);
     tour++;
     meteo = Meteo.Generer();
     Animaux animaux = Animaux.GenererAnimaux();
@@ -105,6 +93,7 @@ void PasserTour()
 
 while (true)
 {
+    AfficherGrille(grille);
     int choix;
     meteo = Meteo.Generer();
     if (!meteo.Urgence)
@@ -121,7 +110,23 @@ while (true)
                 }
                 Console.Write("Choisissez une plante à semer : ");
                 int indice = int.Parse(Console.ReadLine());
-                simulateur.Semer(catalogue[indice - 1]);
+                Console.Write("Entrez la ligne (0 à 4) : ");
+                int ligne = int.Parse(Console.ReadLine());
+                Console.Write("Entrez la colonne (0 à 4) : ");
+                int colonne = int.Parse(Console.ReadLine());
+
+                if (grille[ligne, colonne] == "[   ]")
+                {
+                    string nom = catalogue[indice - 1].Nom.Trim();
+                    string abrege = nom.Length >= 3 ? nom.Substring(0, 3) : nom.PadRight(3);
+                    grille[ligne, colonne] = $"[{abrege}]";
+                    simulateur.Semer(catalogue[indice - 1]);
+                }
+
+                else
+                {
+                    Console.WriteLine("Cette case est déjà occupée !");
+                }
                 nbActions--;
             }
 
