@@ -14,45 +14,25 @@ Maladie botrytis = new Maladie("Botrytis", 2, 3, 4);
 // Créer un catalogue de plantes
 List<Plante> catalogue = new List<Plante>
 {
-    new Comestible("Tomate 🍅 ", "Légume", new List<string>{"Été"}, "Terre", (15, 30), 1, 1.2, new List<Maladie>{mildiou}, 3, 0.6, 0.8, 5),
-    new Comestible("Carotte 🥕 ", "Légume", new List<string>{"Printemps"}, "Terre", (10, 25), 0.8, 1.0, new List<Maladie>{rouille}, 2, 0.5, 0.7, 4),
-    new Comestible("Cactus 🌵", "Cactaceae", new List<string> {"Été"}, "Sable", (10, 40), 0.3, 0.2,  new List<Maladie> {cochenille}, 2, 0.2, 0.9, 1.5),
-    new Comestible("Pastèque 🍉","Fruit",new List<string> { "Été", "Fin du printemps" },"Sable",(20, 35),1.5,0.3,new List<Maladie>{fongique},4,5.0,8.0,3.0),
-    new Comestible("Fraise 🍓","Fruit",new List<string> { "Printemps", "Été" }, "Sol riche, frais et bien drainé",(15, 25), 0.3,0.4, new List<Maladie>{botrytis},20,2.0,6.0,0.25),
+    new Comestible("🍅Tomate", "Légume", new List<string>{"Été"}, "Terre", (15, 30), 1, 1.2, new List<Maladie>{mildiou}, 3, 0.6, 0.8, 5),
+    new Comestible("🥕Carotte", "Légume", new List<string>{"Printemps"}, "Terre", (10, 25), 0.8, 1.0, new List<Maladie>{rouille}, 2, 0.5, 0.7, 4),
+    new Comestible("🌵Cactus", "Cactaceae", new List<string> {"Été"}, "Sable", (10, 40), 0.3, 0.2,  new List<Maladie> {cochenille}, 2, 0.2, 0.9, 1.5),
+    new Comestible("🍉Pastèque","Fruit",new List<string> { "Été", "Fin du printemps" },"Sable",(20, 35),1.5,0.3,new List<Maladie>{fongique},4,5.0,8.0,3.0),
+    new Comestible("🍓Fraise","Fruit",new List<string> { "Printemps", "Été" }, "Sol riche, frais et bien drainé",(15, 25), 0.3,0.4, new List<Maladie>{botrytis},20,2.0,6.0,0.25),
 
 
 };
 
+
+
+
 // Créer le simulateur
 Simulateur simulateur = new Simulateur(terrain);
-int largeurGrille = 5;
-int hauteurGrille = 5;
-string[,] grille = new string[hauteurGrille, largeurGrille];
-
-// Initialisation de la grille vide
-for (int y = 0; y < hauteurGrille; y++)
-{
-    for (int x = 0; x < largeurGrille; x++)
-    {
-        grille[y, x] = "[   ]";
-    }
-}
-void AfficherGrille(string[,] grille)
-{
-    Console.WriteLine("\n🌱 État du terrain :");
-    for (int y = 0; y < grille.GetLength(0); y++)
-    {
-        for (int x = 0; x < grille.GetLength(1); x++)
-        {
-            Console.Write(grille[y, x]);
-        }
-        Console.WriteLine();
-    }
-}
 
 int nbActions = 3;
 Menu menu = new Menu();
 int tour = 0;
+
 Console.WriteLine("Voici la liste des plantes : ");
 for (int i = 0; i < catalogue.Count(); i++)
 {
@@ -60,31 +40,75 @@ for (int i = 0; i < catalogue.Count(); i++)
 }
 Console.Write("Choisissez une plante à semer : ");
 int index = int.Parse(Console.ReadLine());
-
+terrain.AjouterPlante(catalogue[index - 1]);
 
 Meteo meteo;
 
-
-
-
-
 void PasserTour()
 {
-    AfficherGrille(grille);
     tour++;
+
+    // Générer la météo du tour
     meteo = Meteo.Generer();
-    Animaux animaux = Animaux.GenererAnimaux();
+
+    // Génération d’un animal aléatoire avec une probabilité d’apparition
+    Animaux nouvelAnimal = Animaux.GenererAnimalAleatoire();
+    if (nouvelAnimal != null)
+    {
+        terrain.AnimauxDansLeTerrain.Add(nouvelAnimal);
+    }
+
+    // Placement et actions des animaux
+    foreach (var animal in terrain.AnimauxDansLeTerrain.ToList())
+    {
+        int x = terrain.Rng.Next(0, 10);
+        int y = terrain.Rng.Next(0, 10);
+        animal.Position = (x, y);
+
+        Plante? plante = terrain.GrillePlantes[x, y];
+        if (plante != null)
+        {
+            animal.AttaquerPlante(plante);
+            Console.WriteLine($"Un {animal.GetType().Name} attaque une plante à ({x}, {y}) !");
+
+            // Menu d'urgence
+            Console.WriteLine("Menu d'urgence :");
+            Console.WriteLine("1. Retirer l'animal");
+            Console.WriteLine("2. Ignorer");
+            string? choix = Console.ReadLine();
+
+            if (choix == "1")
+            {
+                terrain.AnimauxDansLeTerrain.Remove(animal);
+                Console.WriteLine("L'animal a été retiré du jardin.");
+                break; // éviter modification en boucle
+            }
+        }
+    }
+
+    // Affichage du jardin avec les plantes et animaux
+    terrain.AfficherJardin();
+
+    // Affichage de la météo
     Console.WriteLine(meteo);
+
+    // Évolution des plantes
     foreach (var p in terrain.Plantes.ToList())
     {
-        p.Pousser(meteo, terrain, animaux);
+        p.Pousser(meteo, terrain);
         if (p.EstMort)
         {
             terrain.SupprimerPlante(p);
         }
+
+        if (p.PeutRecolter())
+        {
+            Console.WriteLine($"✅ Vous avez récolté {p.Recolter()} {p.Nom}");
+        }
     }
-    Console.WriteLine("Tour terminé");
-    
+
+    Console.WriteLine("✔️ Tour terminé");
+
     nbActions = 3;
     Console.WriteLine("Appuyez sur une touche pour continuer...");
     Console.ReadKey();
@@ -93,7 +117,6 @@ void PasserTour()
 
 while (true)
 {
-    AfficherGrille(grille);
     int choix;
     meteo = Meteo.Generer();
     if (!meteo.Urgence)
@@ -110,29 +133,13 @@ while (true)
                 }
                 Console.Write("Choisissez une plante à semer : ");
                 int indice = int.Parse(Console.ReadLine());
-                Console.Write("Entrez la ligne (0 à 4) : ");
-                int ligne = int.Parse(Console.ReadLine());
-                Console.Write("Entrez la colonne (0 à 4) : ");
-                int colonne = int.Parse(Console.ReadLine());
-
-                if (grille[ligne, colonne] == "[   ]")
-                {
-                    string nom = catalogue[indice - 1].Nom.Trim();
-                    string abrege = nom.Length >= 3 ? nom.Substring(0, 3) : nom.PadRight(3);
-                    grille[ligne, colonne] = $"[{abrege}]";
-                    simulateur.Semer(catalogue[indice - 1]);
-                }
-
-                else
-                {
-                    Console.WriteLine("Cette case est déjà occupée !");
-                }
+                terrain.AjouterPlante(catalogue[indice - 1]);
                 nbActions--;
             }
 
             else
             {
-                Console.WriteLine($"Le nombre des actions possibles par tour est atteint");
+                Console.WriteLine($"Le nombre des actions possibles par tour est atteint ! un tour va etre passer");
                 PasserTour();
             }
 
@@ -156,7 +163,7 @@ while (true)
             }
             else
             {
-                Console.WriteLine("Le nombre des actions possibles par tours est atteint ! ");
+                Console.WriteLine("Le nombre des actions possibles par tours est atteint ! un tour va etre passer");
                 PasserTour();
             }
 
@@ -177,7 +184,7 @@ while (true)
             }
             else
             {
-                Console.WriteLine("Le nombre des actions possibles par tours est atteint ! ");
+                Console.WriteLine("Le nombre des actions possibles par tours est atteint ! un tour va etre passer");
                 PasserTour();
             }
         }
@@ -199,7 +206,7 @@ while (true)
             }
             else
             {
-                Console.WriteLine("Le nombre des actions possibles par tours est atteint ! ");
+                Console.WriteLine("Le nombre des actions possibles par tours est atteint ! un tour va etre passer");
                 PasserTour();
             }
         }
@@ -218,7 +225,7 @@ while (true)
             }
             else
             {
-                Console.WriteLine("Le nombre des actions possibles par tours est atteint ! ");
+                Console.WriteLine("Le nombre des actions possibles par tours est atteint ! un tour va etre passer ");
                 PasserTour();
             }
         }
@@ -247,7 +254,7 @@ while (true)
         }
         else
         {
-            Console.WriteLine("Le nombre des actions possibles par tours est atteint ! ");
+            Console.WriteLine("Le nombre des actions possibles par tours est atteint ! un tour va etre passer ");
             PasserTour();
         }
     }

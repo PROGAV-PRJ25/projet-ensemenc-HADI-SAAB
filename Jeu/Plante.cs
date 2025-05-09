@@ -66,7 +66,7 @@ public abstract class Plante
             EstMort = true;
         }
     }
-    public bool VerifierConditions(Meteo meteo, Terrain terrain, Animaux animal )
+    public bool VerifierConditions(Meteo meteo, Terrain terrain)
     {
         if (EstMort) return false;
 
@@ -95,12 +95,6 @@ public abstract class Plante
             conditionScore += 25;
         else
             ModifierSnate(-(int)(BesoinLumineux - meteo.Soleil) * 20);
-
-        // animal en train de manger (un animal impacte la santé de la plante)
-        if (animal.NiveauDeRisqueAnimal > animal.NiveauDeRisqueAnimalMax)
-        {
-            conditionScore += 25; 
-        }
 
         if (conditionScore < 50)
             {
@@ -156,7 +150,7 @@ public abstract class Plante
         }
     }
 
-    public virtual void Pousser(Meteo meteo, Terrain terrain, Animaux animal)
+    public virtual void Pousser(Meteo meteo, Terrain terrain)
     {
         if (EstMort)
         {
@@ -164,7 +158,7 @@ public abstract class Plante
             return;
         }
 
-        if (!VerifierConditions(meteo, terrain, animal))
+        if (!VerifierConditions(meteo, terrain))
             return;
 
         Age++;

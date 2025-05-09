@@ -1,34 +1,46 @@
 public class Animaux
 {
-    // Liste globale de noms d'animaux pour la génération
-    private static List<string> ListeNomAnimaux = new List<string>
+    public string Nom { get; private set; }
+    public double ProbabiliteApparition { get; private set; }
+    public int Degats { get; private set; }
+    public (int X, int Y)? Position { get; set; }
+
+    private static List<Animaux> typesAnimaux = new List<Animaux>
     {
-        "escargots", "rongeurs", "oiseaux", "lagomorphes", "talpinae", "piétineurs", "Serpent"
+        new Animaux("Lapin 🐇", 0.3, 20),
+        new Animaux("Pigeon 🐦", 0.2, 10),
+        new Animaux("Taupe 🦫", 0.15, 30),
+        new Animaux("Chenille 🐛", 0.25, 50)
     };
 
-    public string NomAnimal { get; protected set; }
-    public double NiveauDeRisqueAnimal { get; protected set; }
-    public double NiveauDeRisqueAnimalMax { get; protected set; }
-
-  
-    public Animaux(string nomAnimal, double niveauDeRisqueAnimal)
+    public Animaux(string nom, double proba, int degats)
     {
-        NomAnimal = nomAnimal;
-        NiveauDeRisqueAnimal = niveauDeRisqueAnimal;
-        NiveauDeRisqueAnimalMax = 9.9;
+        Nom = nom;
+        ProbabiliteApparition = proba;
+        Degats = degats;
+        Position = null;
     }
 
-    public static Animaux GenererAnimaux()
+    public static Animaux GenererAnimalAleatoire()
     {
-        Random rng = new Random();
+        Random rnd = new Random();
+        double tirage = rnd.NextDouble();
+        double cumul = 0;
 
-        // Choisir un nom aléatoire dans la liste
-        int index = rng.Next(ListeNomAnimaux.Count);
-        string nomAleatoire = ListeNomAnimaux[index];
+        foreach (var a in typesAnimaux)
+        {
+            cumul += a.ProbabiliteApparition;
+            if (tirage <= cumul)
+            {
+                return new Animaux(a.Nom, a.ProbabiliteApparition, a.Degats);
+            }
+        }
+        return null;
+    }
 
-        // Générer un niveau de risque aléatoire entre 1 et 9.9
-        double niveauRisque = Math.Round(rng.NextDouble() * 8.9 + 1, 1);
-
-        return new Animaux(nomAleatoire, niveauRisque);
+    public void AttaquerPlante(Plante plante)
+    {
+        plante.ModifierSnate(-Degats);
+        Console.WriteLine($"{Nom} a attaqué {plante.Nom} et lui a infligé {Degats}% de dégâts !");
     }
 }

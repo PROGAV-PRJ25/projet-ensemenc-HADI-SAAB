@@ -7,7 +7,7 @@ public class Meteo
     public static List<string> ListConditions = new List<string>{
         "Grele", "Tempete", "Chaud", "Frois"
     };
-    public bool Urgence => Condition == "Grele" || Condition == "Tempete"; // en °C
+    public bool Urgence; // en °C
 
     public Meteo(double pluie, double soleil, double temp, string condition)
     {
