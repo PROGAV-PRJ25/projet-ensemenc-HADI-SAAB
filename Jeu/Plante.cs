@@ -51,6 +51,8 @@ public abstract class Plante
 
     }
 
+    public abstract Plante Clone();
+
     public void ModifierSnate(int data)
     {
         if (data > 0)

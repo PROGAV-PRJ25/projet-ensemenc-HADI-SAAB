@@ -5,4 +5,10 @@ public class Comestible : Plante
         
     }
 
+    public override Plante Clone()
+     {
+        return new Comestible(Nom, Nature, new List<string>(Saisons), TerrainPrefere, ZonesTempPreferee,
+                              Espace, VitesseCroissance, new List<Maladie>(MaladiesPossibles), Productivite, BesoinEau, BesoinLumineux, TailleMax);
+    }
+
 }

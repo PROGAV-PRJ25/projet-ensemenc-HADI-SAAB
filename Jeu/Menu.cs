@@ -6,12 +6,10 @@ public class Menu
     {
         "Semer une plante 🍀 ",
         "Arroser une plante 🪣 ",
-        "Arroser toutes les plantes 🪣 ",
+        //"Arroser toutes les plantes 🪣 ",
         "Traiter une plante",
         "Afficher état des plantes 👀 ",
         "Passer un tour",
-        "Sauvegarder ✅ ",
-        "Charger ↩️ ",
         "Quitter ❌ "
     };
 
