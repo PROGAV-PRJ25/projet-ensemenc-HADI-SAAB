@@ -17,6 +17,7 @@ List<Plante> catalogue = new List<Plante>
 };
 
 Simulateur simulateur = new Simulateur(terrain, catalogue);
+terrain.AfficherJardin();
 simulateur.AfficherCatalogueEtSemer();
 
 int nbActions = 3;
@@ -28,7 +29,58 @@ while (enCours)
 {
     int choix;
     Meteo m = Meteo.Generer();
-    if (!m.Urgence)
+    Console.ForegroundColor = ConsoleColor.Blue;
+    Console.WriteLine("Météo d'aujoud'hui");
+    Console.ResetColor();
+    Console.WriteLine(m);
+    terrain.AfficherJardin();
+    Console.WriteLine("Appuyez sur une touche pour continuer...");
+    Console.ReadKey();
+    if (m.Condition == "Grele" || m.Condition == "Tempete" || m.Temperature < 5 || m.Temperature > 30 || m.Pluie > 0.8)
+    {
+        int urgen = 0;
+        foreach (var plante in terrain.Plantes)
+        {
+            if (!plante.ProtectionPhysique || !plante.EstProtegee)
+            {
+                urgen++;
+            }
+        }
+        if (urgen > 0)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("⚠️  Urgence ! La météo impose un traitement d'urgence !");
+            Console.ResetColor();
+            Console.WriteLine("Appuyez sur une touche pour continuer...");
+            Console.ReadKey();
+            choix = menu.AfficherMenuUrgence();
+            if (choix == 1)
+            {
+                simulateur.ProtegerContrePluie();
+                
+            }
+            else if (choix == 2)
+            {
+                simulateur.ProtegerContreGel();
+            }
+            else if (choix == 3)
+            {
+                simulateur.ProtegerContreCanicule();
+            }
+            else if (choix == 4)
+            {
+                simulateur.ProtegerContreVent();
+            }
+        }
+        else 
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("✅ La météo est mauvaise mais ne vous inquiétez pas, toutes les plantes sont protégées.");
+            Console.ResetColor();
+        }
+        
+    }
+    else 
     {
         choix = menu.AfficherMenu();
         if (choix == 1)
@@ -42,7 +94,8 @@ while (enCours)
             else 
             {
                 Console.WriteLine($"Le nombre des actions possibles par tour est atteint ! un tour va etre passer");
-                simulateur.PasserTour();
+                tour++;
+                simulateur.PasserTour(tour);
                 nbActions = 3;
             }
         }
@@ -57,7 +110,8 @@ while (enCours)
             else 
             {
                 Console.WriteLine($"Le nombre des actions possibles par tour est atteint ! un tour va etre passer");
-                simulateur.PasserTour();
+                tour++;
+                simulateur.PasserTour(tour);
                 nbActions = 3;
             }
         }
@@ -72,7 +126,8 @@ while (enCours)
             else 
             {
                 Console.WriteLine($"Le nombre des actions possibles par tour est atteint ! un tour va etre passer");
-                simulateur.PasserTour();
+                tour++;
+                simulateur.PasserTour(tour);
                 nbActions = 3;
             }
         }
@@ -87,13 +142,15 @@ while (enCours)
             else 
             {
                 Console.WriteLine($"Le nombre des actions possibles par tour est atteint ! un tour va etre passer");
-                simulateur.PasserTour();
+                tour++;
+                simulateur.PasserTour(tour);
                 nbActions = 3;
             }
         }
         else if (choix == 5)
         {
-            simulateur.PasserTour();
+            tour++;
+            simulateur.PasserTour(tour);
             nbActions = 3;
         }
         else if (choix == 6)
@@ -103,7 +160,7 @@ while (enCours)
         }
         
     }
-    
+   
            
     
 

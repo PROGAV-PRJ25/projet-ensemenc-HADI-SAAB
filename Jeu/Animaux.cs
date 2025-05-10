@@ -40,6 +40,17 @@ public class Animaux
 
     public void AttaquerPlante(Plante plante)
     {
+        if (plante.EstProtegee)
+        {
+            Console.WriteLine("L’animal est repoussé ! La plante ne subit aucun dégât.");
+            return;
+        }
+
+        if (plante.ProtectionPhysique)
+        {
+            Console.WriteLine("Un filet bloque l’animal. Il repart sans attaquer.");
+            return;
+        }
         plante.ModifierSnate(-Degats);
         Console.WriteLine($"{Nom} a attaqué {plante.Nom} et lui a infligé {Degats}% de dégâts !");
     }

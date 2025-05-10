@@ -15,12 +15,10 @@ public class Menu
 
     private string[] optionsUrgence = new string[]
     {
-        "Faire du bruit", 
-        "Déployer une bâche",
-        "Fermer une serre",
-        "Acheter un épouvantail",
-        "Reboucher des trous",
-        "Creuser une tranchée"
+        "Couvrir les plantes (contre la pluie)",
+        "Allumer un chauffage d’appoint (contre le gel)",
+        "Installer un voile d’ombrage (contre la canicule)",
+        "Fixer des tuteurs ou des filets (contre le vent fort)"
     };
 
     public int AfficherMenu()

@@ -41,7 +41,7 @@ public class Simulateur
         Console.ReadKey();
     }
 
-    public void PasserTour()
+    public void PasserTour(int t)
     {
         if (!Terrain.Plantes.Any())
         {
@@ -50,7 +50,7 @@ public class Simulateur
             return;
         }
 
-        Console.WriteLine("\n-------- Nouveau tour --------");
+        Console.WriteLine($"\n--------  Semaine N° {t} --------");
 
         var meteo = Meteo.Generer();
         Console.WriteLine(meteo);
@@ -97,22 +97,21 @@ public class Simulateur
 
     public void ArroserUnePlante()
     {
-        Terrain.AfficherJardin();
-        Console.WriteLine("Coordonnées de la plante à arroser (x y) :");
-        string[] coords = Console.ReadLine()?.Split();
-        if (coords?.Length == 2 &&
-            int.TryParse(coords[0], out int x) &&
-            int.TryParse(coords[1], out int y))
+        Console.WriteLine("Quelle Plante voulez vs arroser ?");
+        for (int i = 0; i < Terrain.Plantes.Count(); i++)
         {
-            Terrain.ArroserPlante(x, y);
+            Console.WriteLine($"{i + 1} : {Terrain.Plantes[i].Nom}");
         }
+        int indice = int.Parse(Console.ReadLine());
+        Console.WriteLine("De quelle quantité voulez vous arroser la plante ? (entre 0.0-1.0)");
+        double quantite = Convert.ToDouble(Console.ReadLine());
+        Terrain.Plantes[indice - 1].Arrosser(quantite);
         Console.WriteLine("Appuyez sur une touche pour continuer...");
         Console.ReadKey();
     }
 
     public void TraiterUnePlante()
     {
-        Terrain.AfficherJardin();
         Console.WriteLine("Coordonnées de la plante à traiter (x y) :");
         string[] coords = Console.ReadLine()?.Split();
         if (coords?.Length == 2 &&
@@ -134,4 +133,50 @@ public class Simulateur
         Console.WriteLine("Appuyez sur une touche pour continuer...");
         Console.ReadKey();
     }
+
+
+    public void ProtegerContrePluie()
+    {
+        foreach (var plante in Terrain.Plantes)
+        {
+            plante.ProtectionPhysique = true;
+        }
+        Console.WriteLine("Toutes les plantes sont couvertes contre la pluie.");
+        Console.WriteLine("Appuyez sur une touche pour continuer...");
+        Console.ReadKey();
+    }
+
+    public void ProtegerContreGel()
+    {
+        foreach (var plante in Terrain.Plantes)
+        {
+            plante.EstProtegee = true;
+        }
+        Console.WriteLine("Un chauffage a été activé. Les plantes sont protégées du gel.");
+        Console.WriteLine("Appuyez sur une touche pour continuer...");
+        Console.ReadKey();
+    }
+
+    public void ProtegerContreCanicule()
+    {
+        foreach (var plante in Terrain.Plantes)
+        {
+            plante.EstProtegee = true;
+        }
+        Console.WriteLine("Un voile d’ombrage protège les plantes de la canicule.");
+        Console.WriteLine("Appuyez sur une touche pour continuer...");
+        Console.ReadKey();
+    }
+
+    public void ProtegerContreVent()
+    {
+        foreach (var plante in Terrain.Plantes)
+        {
+            plante.ProtectionPhysique = true;
+        }
+        Console.WriteLine("Des tuteurs et filets protègent les plantes du vent fort.");
+        Console.WriteLine("Appuyez sur une touche pour continuer...");
+        Console.ReadKey();
+    }
+
 }

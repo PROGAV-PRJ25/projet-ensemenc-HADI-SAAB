@@ -22,7 +22,9 @@ public abstract class Plante
     public Random rng { get; set; }
     public double MaxEaux{get; protected set; }
     public double MaxLumiere{get; protected set;}
-    
+    public bool EstProtegee { get; set; } = false;
+    public bool ProtectionPhysique { get; set; } = false;
+
 
 
 
