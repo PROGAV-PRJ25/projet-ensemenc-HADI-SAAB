@@ -2,8 +2,9 @@ public class Animaux
 {
     public string Nom { get; protected set; }
     public double ProbabiliteApparition { get; protected set; }
-    public int Degats { get; protected set; }
+    public int Degats { get; set; }
     public (int X, int Y)? Position { get; set; }
+    public Random rng = new Random();
 
     private static List<Animaux> typesAnimaux = new List<Animaux>
     {
@@ -51,7 +52,31 @@ public class Animaux
             Console.WriteLine("Un filet bloque l’animal. Il repart sans attaquer.");
             return;
         }
-        plante.ModifierSnate(-Degats);
+        plante.ModifierSante(-Degats);
         Console.WriteLine($"{Nom} a attaqué {plante.Nom} et lui a infligé {Degats}% de dégâts !");
     }
+
+     public void SeDeplacer(Terrain terrain)
+    {
+        if (Position == null) return;
+        
+        var (x, y) = Position.Value;
+        int newX = x + rng.Next(-1, 2);
+        int newY = y + rng.Next(-1, 2);
+        
+        // Vérifier les limites du terrain
+        newX = Math.Clamp(newX, 0, 9);
+        newY = Math.Clamp(newY, 0, 9);
+        
+        Position = (newX, newY);
+        
+        // Attaquer si une plante est présente
+        var plante = terrain.GrillePlantes[(newX, newY)];
+        if (plante != null && !plante.EstMort)
+        {
+            AttaquerPlante(plante);
+        }
+    }
+
+
 }

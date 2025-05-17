@@ -8,6 +8,12 @@ public abstract class Terrain
     public Random Rng { get; set; }
     public List<Animaux> AnimauxDansLeTerrain { get; private set; } = new List<Animaux>();
     public Dictionary<(int x, int y), Plante> GrillePlantes { get; set; } = new Dictionary<(int x, int y), Plante>();
+    public List<Intemperie> IntemperiesActuelles { get; } = new List<Intemperie>();
+    public (int X, int Y) PositionSelection { get; private set; } = (0, 0);
+    public bool UrgenceEnCours { get; private set; }
+    public string MessageUrgence { get; private set; }
+    public int Largeur { get; private set; }
+    public int Hauteur { get; private set; }
 
 
     public Terrain(string type, double surface)
@@ -17,10 +23,50 @@ public abstract class Terrain
         SurfaceOccupee = 0;
         Plantes = new List<Plante>();
         Rng = new Random();
-
-        // 20% de chance pour que le terrain possède des mauvaises herbes
         ADesMauvaiseHerbes = Rng.NextDouble() < 0.2;
+
+        // Déduire la taille (arrondie au sol pour que ça tienne)
+        int taille = (int)Math.Floor(Math.Sqrt(surface));
+        Largeur = taille;
+        Hauteur = taille;
     }
+
+
+    public void DeplacerSelection(int deltaX, int deltaY)
+    {
+        PositionSelection = (
+            Math.Clamp(PositionSelection.X + deltaX, 0, Largeur - 1),
+            Math.Clamp(PositionSelection.Y + deltaY, 0, Hauteur - 1)
+        );
+    }
+
+
+    public void DeclencherUrgence(Meteo meteo)
+    {
+        UrgenceEnCours = true;
+        MessageUrgence = GenererMessageUrgence(meteo);
+    }
+    private string GenererMessageUrgence(Meteo meteo)
+    {
+        if (meteo.Condition == "Grêle")
+            return "ALERTE GRÊLE ! Protégez vos plantes !";
+        else if (AnimauxDansLeTerrain.Any())
+            return $"ATTAQUE DE {AnimauxDansLeTerrain.First().Nom.ToUpper()} !";
+
+        return "SITUATION D'URGENCE !";
+    }
+
+    public void VerifierFinUrgence()
+    {
+        if (AnimauxDansLeTerrain.Count == 0 && IntemperiesActuelles.Count == 0)
+        {
+            UrgenceEnCours = false;
+            MessageUrgence = "";
+        }
+    }
+
+
+
 
     public void AjouterAnimaux(List<Animaux> animaux)
     {
@@ -28,55 +74,34 @@ public abstract class Terrain
     }
 
 
-   public bool AjouterPlante(Plante plante, int x, int y)
-   {
-        if (SurfaceOccupee + plante.Espace > Surface)
+    // Supprimez les anciennes méthodes et gardez celles-ci :
+    public bool AjouterPlante(Plante plante)
+    {
+        if (GrillePlantes.ContainsKey(PositionSelection))
             return false;
 
-        if (GrillePlantes.ContainsKey((x, y)))
-        return false; // déjà occupé
-
+        GrillePlantes[PositionSelection] = plante;
         Plantes.Add(plante);
-        GrillePlantes[(x, y)] = plante;
         SurfaceOccupee += plante.Espace;
         return true;
     }
 
-    public void ArroserPlante(int x, int y)
+
+    public void ArroserPlante(double quantiteEau)
     {
-        if (GrillePlantes.TryGetValue((x, y), out Plante plante) && plante != null)
+        if (GrillePlantes.TryGetValue(PositionSelection, out Plante plante))
         {
-            Console.WriteLine($"Vous avez choisi la plante : {plante.Nom} à ({x},{y})");
-            Console.WriteLine("De quelle quantité voulez-vous arroser la plante ? (entre 0.0 - 1.0)");
-            if (double.TryParse(Console.ReadLine(), out double quantite) && quantite >= 0.0 && quantite <= 1.0)
-            {
-                plante.Arrosser(quantite);
-                
-            }
-            else
-            {
-                Console.WriteLine("Quantité invalide.");
-            }
-        }
-        else
-        {
-            Console.WriteLine("Aucune plante trouvée à ces coordonnées.");
+            plante.Arroser(quantiteEau);
         }
     }
 
-    public void TraiterPlante(int x, int y)
+    public void TraiterPlante()
     {
-        if (GrillePlantes.TryGetValue((x, y), out Plante plante) && plante != null)
+        if (GrillePlantes.TryGetValue(PositionSelection, out Plante plante))
         {
             plante.AppliquerTraitement();
-            
-        }
-        else
-        {
-            Console.WriteLine("Aucune plante trouvée à ces coordonnées.");
         }
     }
-
 
     public void SemerPlante(Plante p, int x, int y)
     {
@@ -92,12 +117,12 @@ public abstract class Terrain
             Console.WriteLine($"{p.Nom} semée en ({x}, {y}).");
             Plantes.Add(p);
             Surface -= p.Espace;
-            
+
         }
-        else 
+        else
         {
             Console.WriteLine($"Espace insuffisant dans le terrain pour semer la plante {p.Nom}.");
-        }    
+        }
     }
 
 
@@ -126,8 +151,8 @@ public abstract class Terrain
 
     public string[,] GetGrille()
     {
-        int lignes = 10; // Hauteur du terrain (Y)
-        int colonnes = 10; // Largeur du terrain (X)
+        int lignes = Hauteur;
+        int colonnes = Largeur;
 
         string[,] grille = new string[lignes, colonnes];
 
@@ -143,47 +168,84 @@ public abstract class Terrain
         return grille;
     }
 
-    public void AfficherJardin()
+    public void GenererIntemperieAleatoire()
     {
-        string[,] grille = new string[5, 5];
+        string[] types = { "Grêle", "Tempête", "Sécheresse", "Vent violent" };
+        string type = types[Rng.Next(types.Length)];
+        var intemperie = new Intemperie(type, Rng.Next(3, 7), Rng.Next(1, 4));
 
-        // Initialiser la grille à vide
-        for (int y = 0; y < 5; y++)
+        // Position aléatoire pour les intempéries localisées
+        if (type == "Grêle" || type == "Tempête")
         {
-            for (int x = 0; x < 5; x++)
-            {
-                grille[y, x] = "[  ]";
-            }
+            intemperie.Position = (Rng.Next(0, 5), Rng.Next(0, 5));
         }
 
-        // Afficher les plantes en fonction de leur position
-        foreach (var kvp in GrillePlantes)
+        IntemperiesActuelles.Add(intemperie);
+        Console.WriteLine($"ALERTE : Une {type} approche !");
+    }
+
+
+
+    public void AfficherJardin(bool modeUrgence = false)
+    {
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+        if (modeUrgence)
         {
-            var (x, y) = kvp.Key;
-            var plante = kvp.Value;
-            grille[y, x] = "[" + plante.Nom.Substring(0, 2) + "]";
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine("═══════════ ! URGENCE ! ═══════════");
+            Console.ResetColor();
         }
 
-        // Afficher les animaux (écrase l'affichage de la plante s'il y en a une dessous)
-        foreach (var animal in AnimauxDansLeTerrain)
+        for (int y = 0; y < Hauteur; y++)
         {
-            if (animal.Position != null)
+            for (int x = 0; x < Largeur; x++)
             {
-                var (x, y) = animal.Position.Value;
-                grille[y, x] = "[" + animal.Nom.Substring(0, 2) + "]";
-            }
-        }
+                // Vérifier d'abord les animaux (priorité en mode urgence)
+                var animal = AnimauxDansLeTerrain.FirstOrDefault(a => a.Position == (x, y));
+                if (animal != null && modeUrgence)
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.Write("🐛 "); // Symbole animal
+                    Console.ResetColor();
+                    continue;
+                }
 
-        // Affichage en console
-        Console.WriteLine("Jardin actuel :");
-        for (int y = 0; y < 5; y++)
-        {
-            for (int x = 0; x < 5; x++)
-            {
-                Console.Write(grille[y, x] + " ");
+                // Afficher la plante sinon
+                GrillePlantes.TryGetValue((x, y), out var plante);
+                if (plante != null)
+                {
+                    Console.ForegroundColor = plante.EstMort ? ConsoleColor.DarkGray :
+                        (plante.Sante < 30 ? ConsoleColor.Red :
+                        (plante.Sante < 70 ? ConsoleColor.Yellow : ConsoleColor.Green));
+
+                    Console.Write(" " + plante.Nom.Substring(0, 2) + "  ");
+                }
+                else if (animal != null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.Write(animal.Nom.StartsWith("Lapin") ? "🐇" :
+                                    animal.Nom.StartsWith("Pigeon") ? "🕊" :
+                                    animal.Nom.StartsWith("Taupe") ? "🦡" : "🐛");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.Write(Type == "Terre" ? " 🟫 " : " 🟨 ");
+                }
+                Console.ResetColor();
             }
             Console.WriteLine();
         }
-    }
 
+        if (modeUrgence)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("═══════════════════════════════════════");
+            Console.ResetColor();
+        }
+    }
+    
+
+   
 }

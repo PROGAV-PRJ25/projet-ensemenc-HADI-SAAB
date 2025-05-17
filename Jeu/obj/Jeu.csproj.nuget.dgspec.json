@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\R M\\Documents\\Projet C#\\projet-ensemenc-saab-hadi\\Jeu\\Jeu.csproj": {}
+    "C:\\Users\\R M\\Documents\\Projet C#\\projet-ensemenc-HADI-SAAB\\Jeu\\Jeu.csproj": {}
   },
   "projects": {
-    "C:\\Users\\R M\\Documents\\Projet C#\\projet-ensemenc-saab-hadi\\Jeu\\Jeu.csproj": {
+    "C:\\Users\\R M\\Documents\\Projet C#\\projet-ensemenc-HADI-SAAB\\Jeu\\Jeu.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\R M\\Documents\\Projet C#\\projet-ensemenc-saab-hadi\\Jeu\\Jeu.csproj",
+        "projectUniqueName": "C:\\Users\\R M\\Documents\\Projet C#\\projet-ensemenc-HADI-SAAB\\Jeu\\Jeu.csproj",
         "projectName": "Jeu",
-        "projectPath": "C:\\Users\\R M\\Documents\\Projet C#\\projet-ensemenc-saab-hadi\\Jeu\\Jeu.csproj",
+        "projectPath": "C:\\Users\\R M\\Documents\\Projet C#\\projet-ensemenc-HADI-SAAB\\Jeu\\Jeu.csproj",
         "packagesPath": "C:\\Users\\R M\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\R M\\Documents\\Projet C#\\projet-ensemenc-saab-hadi\\Jeu\\obj\\",
+        "outputPath": "C:\\Users\\R M\\Documents\\Projet C#\\projet-ensemenc-HADI-SAAB\\Jeu\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\R M\\AppData\\Roaming\\NuGet\\NuGet.Config",
