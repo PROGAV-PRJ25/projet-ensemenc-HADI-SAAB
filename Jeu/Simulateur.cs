@@ -100,68 +100,86 @@ public class Simulateur
         Console.WriteLine("Que souhaitez-vous faire ?\n");
         int choix = Menu.AfficherMenu();
         Console.Clear();
-
-        switch (choix)
+        if (Joueur.Argent == 0 && Joueur.SemisGratuitsRestants == 0 && Inventaire.Recoltes.Count() == 0)
         {
-            case 1: // Semer
-                if (nbActions > 0)
-                {
-                    GererSemis();
-                    nbActions--;
-                }
-                else ActionsEpuipees();
-                break;
-
-            case 2: // Arroser
-                if (nbActions > 0)
-                {
-                    ArroserPlante();
-                    nbActions--;
-                    Console.WriteLine("Appuyez sur une touche pour continuer...");
-                    Console.ReadKey();
-                }
-                else ActionsEpuipees();
-                break;
-
-            case 3: // Traiter
-                if (nbActions > 0)
-                {
-                    TraiterPlante();
-                    nbActions--;
-                    Console.WriteLine("Appuyez sur une touche pour continuer...");
-                    Console.ReadKey();
-                }
-                else ActionsEpuipees();
-                break;
-
-            case 4: // Magasin
-                Magasin.GererMagasin(this);
-                break;
-
-            case 5: // Passer tour
-                PasserTour();
-                nbActions = 3;
-                break;
-
-            case 6: // Afficher recommandations
-                AfficherRecommandations();
-                break;
-
-            case 7:
-                Terrain.AfficherJardin();
-                Console.WriteLine("Appuyez sur une touche pour continuer...");
-                Console.ReadKey();
-                break;
-
-            case 8:
-                AfficherEtatPlantes();
-                break;
-
-            case 9: // Quitter
-                EnCours = false;
-                Console.WriteLine("Au revoir !");
-                break;
+            Console.WriteLine($"Plus possible de faire quelque chose : argent null, semer grauit atteint et pas de recoltes à vendre");
+            EnCours = false;
         }
+        else
+        {
+            switch (choix)
+            {
+                case 1: // Semer
+                    if (nbActions > 0)
+                    {
+                        GererSemis();
+                        nbActions--;
+                    }
+                    else ActionsEpuipees();
+                    break;
+
+                case 2: // Arroser
+                    if (nbActions > 0)
+                    {
+                        ArroserPlante();
+                        nbActions--;
+                        Console.WriteLine("Appuyez sur une touche pour continuer...");
+                        Console.ReadKey();
+                    }
+                    else ActionsEpuipees();
+                    break;
+
+                case 3: // Traiter
+                    if (nbActions > 0)
+                    {
+                        TraiterPlante();
+                        nbActions--;
+                        Console.WriteLine("Appuyez sur une touche pour continuer...");
+                        Console.ReadKey();
+                    }
+                    else ActionsEpuipees();
+                    break;
+                case 4: //Desherber
+                    if (nbActions > 0)
+                    {
+                        Terrain.Desherber();
+                        nbActions--;
+                        Console.WriteLine("Appuyez sur une touche pour continuer...");
+                        Console.ReadKey();
+                    }
+                    else ActionsEpuipees();
+                    break;
+
+                case 5: // Magasin
+                    Magasin.GererMagasin(this);
+                    break;
+
+                case 6: // Passer tour
+                    PasserTour();
+                    nbActions = 3;
+                    break;
+
+                case 7: // Afficher recommandations
+                    AfficherRecommandations();
+                    break;
+
+                case 8:
+                    Terrain.AfficherJardin();
+                    Console.WriteLine("Appuyez sur une touche pour continuer...");
+                    Console.ReadKey();
+                    break;
+
+                case 9:
+                    AfficherEtatPlantes();
+                    break;
+
+                case 10: // Quitter
+                    EnCours = false;
+                    Console.WriteLine("Au revoir !");
+                    break;
+            }
+        }
+        
     }
 
     private void GererSemis()
@@ -195,19 +213,44 @@ public class Simulateur
 
                 if (!enNavigation)
                 {
-                    if (Terrain.AjouterPlante(plante.Clone()))
+                    if (aAchete)
                     {
-                        Console.WriteLine($"Plante {(aAchete ? "achetée et " : "")}semée avec succès!");
-                        if (aAchete) Joueur.DepenserArgent(Magasin.GetPrix(plante));
+                        double prix = Magasin.GetPrix(plante);
+                        if (Joueur.Argent >= prix)
+                        {
+                            if (Terrain.AjouterPlante(plante.Clone()))
+                            {
+                                Joueur.DepenserArgent(prix);
+                                Console.WriteLine("Plante achetée et semée avec succès!");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Emplacement indisponible!");
+                                enNavigation = true; // Recommencer le choix
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Fonds insuffisants!");
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("Emplacement indisponible!");
-                        if (aAchete) Joueur.AjouterArgent(Magasin.GetPrix(plante));
-                        enNavigation = true;
+                        if (Terrain.AjouterPlante(plante.Clone()))
+                        {
+                            Console.WriteLine($"Plante semée avec succès!");
+
+                        }
+                        else
+                        {
+                            Console.WriteLine("Emplacement indisponible!");
+                            enNavigation = true;
+                        }
                     }
+                    
                 }
             }
+            
         }
         Console.WriteLine("Appuyez sur une touche pour continuer...");
         Console.ReadKey();
@@ -233,11 +276,11 @@ public class Simulateur
             navigation.AfficherAvecCurseur("Sélectionnez la plante à arroser");
             enNavigation = navigation.Naviguer();
             Console.WriteLine("Saisir une quantité :");
-            double quantite = Convert.ToDouble(Console.ReadLine());
-            if (!enNavigation)
+            double quantite;
+            if (!double.TryParse(Console.ReadLine(), out quantite) || quantite <= 0)
             {
-                Terrain.ArroserPlante(quantite);
-                Console.WriteLine("Plante arrosée avec succès !");
+                Console.WriteLine("Quantité invalide.");
+                return;
             }
         }
     }

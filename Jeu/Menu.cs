@@ -7,10 +7,11 @@ public class Menu
         "🌱 Semer",
         "💧 Arroser",
         "🏥 Traiter",
+        "🧹 Desherber",
         "🏪 Magasin ",
         "⏭ Passer au tour",
         "📊 Afficher les recommandations",
-        "Afficher jardin 👀 ",
+        "🩺 Afficher jardin 👀 ",
         "Afficher les états des plantes",
         "Quitter ❌ "
     };

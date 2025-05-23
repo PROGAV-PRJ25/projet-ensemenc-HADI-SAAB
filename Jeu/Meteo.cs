@@ -121,9 +121,9 @@ public class Meteo
                              Saison == Saison.Automne ? ConsoleColor.DarkYellow : ConsoleColor.Cyan;
         
         Console.ForegroundColor = couleur;
-        Console.WriteLine("┌────────────────────────────────────┐");
-        Console.WriteLine($"│ METEO {(EstExtreme ? "EXTRÊME" : Saison.ToString().ToUpper()),-26} │");
-        Console.WriteLine("├────────────────────────────────────┤");
+        Console.WriteLine("┌───────────────────────────────────────────────────────────────┐");
+        Console.WriteLine($"│ METEO {(EstExtreme ? "EXTRÊME" : Saison.ToString().ToUpper()),-26}                          │");
+        Console.WriteLine("├───────────────────────────────────────────────────────────────┤");
         
         Console.Write("│ ");
         Console.ForegroundColor = ConsoleColor.Blue;
@@ -149,7 +149,7 @@ public class Meteo
         
         Console.ForegroundColor = couleur;
         Console.WriteLine(" │");
-        Console.WriteLine("└────────────────────────────────────┘");
+        Console.WriteLine("└───────────────────────────────────────────────────────────────┘");
         Console.ResetColor();
     }
 
