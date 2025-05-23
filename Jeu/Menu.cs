@@ -11,8 +11,8 @@ public class Menu
         "🏪 Magasin ",
         "⏭ Passer au tour",
         "📊 Afficher les recommandations",
-        "🩺 Afficher jardin 👀 ",
-        "Afficher les états des plantes",
+        "👀 Afficher jardin",
+        "🩺 Afficher les états des plantes",
         "Quitter ❌ "
     };
 

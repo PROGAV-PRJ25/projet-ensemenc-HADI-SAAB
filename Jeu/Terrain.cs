@@ -95,13 +95,16 @@ public abstract class Terrain
         }
     }
 
-    public void TraiterPlante()
+    public bool TraiterPlante()
     {
         if (GrillePlantes.TryGetValue(PositionSelection, out Plante plante))
         {
             plante.AppliquerTraitement();
+            return true;
         }
+        return false;
     }
+
 
     public void SemerPlante(Plante p, int x, int y)
     {

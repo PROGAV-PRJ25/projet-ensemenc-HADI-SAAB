@@ -107,24 +107,38 @@ public class Magasin
                         double prix = GetPrix(plante);
                         if (simulateur.Joueur.Argent >= prix)
                         {
+
                             bool enNavigation = true;
                             while (enNavigation)
                             {
                                 simulateur.navigation.AfficherAvecCurseur($"Plante à semer: {plante.Nom}");
-                                enNavigation = simulateur.navigation.Naviguer();
+                                var key = simulateur.navigation.Naviguer();  // récupère la touche appuyée
 
-                                if (!enNavigation)
+                                if (key == ConsoleKey.Enter)
                                 {
+                                    // Validation : on tente d'ajouter la plante
                                     if (simulateur.Terrain.AjouterPlante(plante.Clone()))
                                     {
                                         simulateur.Joueur.DepenserArgent(prix);
                                         Console.WriteLine("Plante achetée et semée avec succès!");
+                                        enNavigation = false; // fin de navigation
                                     }
                                     else
                                     {
                                         Console.WriteLine("Emplacement indisponible!");
-                                        enNavigation = true; // Recommencer le choix
+                                        enNavigation = true; // recommencer la sélection
                                     }
+                                }
+                                else if (key == ConsoleKey.Escape)
+                                {
+                                    // Annulation : on sort sans planter
+                                    Console.WriteLine("Semis annulé.");
+                                    enNavigation = false; // fin de navigation sans planter
+                                }
+                                else
+                                {
+                                    // Pour les autres touches, continuer la navigation
+                                    enNavigation = true;
                                 }
                             }
                         }

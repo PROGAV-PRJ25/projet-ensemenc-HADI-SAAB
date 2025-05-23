@@ -5,35 +5,38 @@ using System.Linq;
 
 public class Simulateur
 {
-    public Joueur Joueur { get; private set; }
-    public Terrain Terrain { get; private set; }
-    public Magasin Magasin { get; private set; }
-    public Inventaire Inventaire { get; private set; }
-    public CycleSaisonnier CycleSaisonnier { get; private set; }
-    public UrgenceManager UrgenceManager { get; private set; }
-    public bool EnCours { get; set; } = true;
-    public Menu Menu { get; set; }
-    private Random rng = new Random();
-    private int tour = 0;
-    private int nbActions = 3;
-    public NavigationManager navigation;
+    // Propriétés du simulateur
+    public Joueur Joueur { get; private set; }  // Le joueur
+    public Terrain Terrain { get; private set; }  // Le terrain de jeu
+    public Magasin Magasin { get; private set; }  // Le magasin pour acheter des plantes
+    public Inventaire Inventaire { get; private set; }  // L'inventaire des récoltes
+    public CycleSaisonnier CycleSaisonnier { get; private set; }  // Gestion des saisons
+    public UrgenceManager UrgenceManager { get; private set; }  // Gestion des urgences
+    public bool EnCours { get; set; } = true;  // Etat du jeu (en cours ou terminé)
+    public Menu Menu { get; set; }  // Menu principal
+    private Random rng = new Random();  // Générateur de nombres aléatoires
+    private int tour = 0;  // Numéro du tour actuel
+    private int nbActions = 3;  // Nombre d'actions restantes
+    public NavigationManager navigation;  // Gestion de la navigation dans le terrain
 
-
-    // Catalogue de plantes
+    // Catalogue de plantes disponibles dans le jeu
     private List<Plante> catalogue;
 
+    // Constructeur du simulateur
     public Simulateur()
     {
         InitialiserJeu();
     }
 
+    // Méthode d'initialisation du jeu
     public void InitialiserJeu()
     {
-        // Initialisation des maladies
+        // Initialisation des maladies possibles
         var mildiou = new Maladie("Mildiou", 7, 3, 0.4);
         var rouille = new Maladie("Rouille", 5, 2, 0.5);
         var cochenille = new Maladie("Cochenille", 5, 4, 0.6);
 
+        // Création du catalogue de plantes avec leurs caractéristiques
         catalogue = new List<Plante>
         {
             new Comestible("🍅 Tomate", "Légume", new List<string>{"Été"}, "Terre", (10, 30), 1, 1.2, new List<Maladie>{mildiou}, 3, 0.6, 0.8, 5),
@@ -43,6 +46,7 @@ public class Simulateur
             new Comestible("🍓 Fraise","Fruit",new List<string> { "Printemps", "Été" }, "Terre",(8, 25), 0.3,0.4, new List<Maladie>{cochenille},20,2.0,6.0,0.25)
         };
 
+        // Initialisation des différents composants du jeu
         Joueur = new Joueur();
         Terrain = ChoisirTerrain();
         Magasin = new Magasin();
@@ -53,6 +57,7 @@ public class Simulateur
         Menu = new Menu();
     }
 
+    // Méthode pour choisir le type de terrain au début du jeu
     private Terrain ChoisirTerrain()
     {
         Console.WriteLine("Choisissez le type de terrain :");
@@ -82,24 +87,26 @@ public class Simulateur
         };
     }
 
-
-
-   
+    // Méthode principale pour exécuter une action du joueur
     public void ExecuterAction()
     {
+        // Vérification s'il y a une urgence en cours
         if (UrgenceManager.EnCours)
         {
             GererUrgence();
             return;
         }
-
         
-        
+        // Affichage des informations du tour
         Console.WriteLine($"=== Tour {tour} | Saison: {CycleSaisonnier.SaisonActuelle} ===");
         Console.WriteLine($"Actions restantes: {nbActions}/3 | Argent: {Joueur.Argent:F2}€");
         Console.WriteLine("Que souhaitez-vous faire ?\n");
+        
+        // Affichage du menu et récupération du choix
         int choix = Menu.AfficherMenu();
         Console.Clear();
+        
+        // Vérification des conditions de fin de jeu
         if (Joueur.Argent == 0 && Joueur.SemisGratuitsRestants == 0 && Inventaire.Recoltes.Count() == 0)
         {
             Console.WriteLine($"Plus possible de faire quelque chose : argent null, semer grauit atteint et pas de recoltes à vendre");
@@ -107,6 +114,7 @@ public class Simulateur
         }
         else
         {
+            // Traitement du choix du joueur
             switch (choix)
             {
                 case 1: // Semer
@@ -139,7 +147,7 @@ public class Simulateur
                     }
                     else ActionsEpuipees();
                     break;
-                case 4: //Desherber
+                case 4: // Desherber
                     if (nbActions > 0)
                     {
                         Terrain.Desherber();
@@ -163,25 +171,25 @@ public class Simulateur
                     AfficherRecommandations();
                     break;
 
-                case 8:
+                case 8: // Afficher le jardin
                     Terrain.AfficherJardin();
                     Console.WriteLine("Appuyez sur une touche pour continuer...");
                     Console.ReadKey();
                     break;
 
-                case 9:
+                case 9: // Afficher l'état des plantes
                     AfficherEtatPlantes();
                     break;
 
-                case 10: // Quitter
+                case 10: // Quitter le jeu
                     EnCours = false;
                     Console.WriteLine("Au revoir !");
                     break;
             }
         }
-        
     }
 
+    // Méthode pour gérer le semis des plantes
     private void GererSemis()
     {
         Console.WriteLine("\nMode d'obtention :");
@@ -192,6 +200,7 @@ public class Simulateur
         Plante plante = null;
         bool aAchete = false;
 
+        // Choix entre semis gratuit ou achat
         if (choix == '1' && Joueur.PeutSemerGratuit())
         {
             plante = new SelectionPlante(catalogue).AfficherEtChoisir();
@@ -203,16 +212,18 @@ public class Simulateur
             if (plante != null) aAchete = true;
         }
 
+        // Si une plante a été sélectionnée
         if (plante != null)
         {
             bool enNavigation = true;
             while (enNavigation)
             {
                 navigation.AfficherAvecCurseur($"Plante à semer: {plante.Nom}");
-                enNavigation = navigation.Naviguer();
+                var key = navigation.Naviguer();
 
-                if (!enNavigation)
+                if (key == ConsoleKey.Enter)
                 {
+                    // Validation : tenter d’ajouter la plante
                     if (aAchete)
                     {
                         double prix = Magasin.GetPrix(plante);
@@ -222,50 +233,59 @@ public class Simulateur
                             {
                                 Joueur.DepenserArgent(prix);
                                 Console.WriteLine("Plante achetée et semée avec succès!");
+                                enNavigation = false;
                             }
                             else
                             {
                                 Console.WriteLine("Emplacement indisponible!");
-                                enNavigation = true; // Recommencer le choix
+                                // Reste en navigation
                             }
                         }
                         else
                         {
                             Console.WriteLine("Fonds insuffisants!");
+                            // Reste en navigation ou sortir ?
+                            enNavigation = false; // Ou true si tu veux retenter
                         }
                     }
                     else
                     {
                         if (Terrain.AjouterPlante(plante.Clone()))
                         {
-                            Console.WriteLine($"Plante semée avec succès!");
-
+                            Console.WriteLine("Plante semée avec succès!");
+                            enNavigation = false;
                         }
                         else
                         {
                             Console.WriteLine("Emplacement indisponible!");
-                            enNavigation = true;
+                            // Reste en navigation
                         }
                     }
-                    
                 }
+                else if (key == ConsoleKey.Escape)
+                {
+                    // Annulation du semis
+                    Console.WriteLine("Semis annulé.");
+                    enNavigation = false;
+                }
+                // Sinon continuer navigation (flèches, etc.)
             }
-            
         }
+
         Console.WriteLine("Appuyez sur une touche pour continuer...");
         Console.ReadKey();
     }
-
+    // Méthode pour arroser une plante
     private void ArroserPlante()
     {
+        // Vérification de la disponibilité des arrosoirs
         if (!Joueur.UtiliserArrosoir())
         {
             Console.WriteLine("Plus d'arrosoirs disponibles !");
             Console.WriteLine("Voulez-vous en acheter ? (O/N)");
-            if (Console.ReadKey().Key == ConsoleKey.O)
+            if (Console.ReadKey(true).Key == ConsoleKey.O)
             {
                 Joueur.AcheterArrosoir();
-                return;
             }
             return;
         }
@@ -274,27 +294,44 @@ public class Simulateur
         while (enNavigation)
         {
             navigation.AfficherAvecCurseur("Sélectionnez la plante à arroser");
-            enNavigation = navigation.Naviguer();
-            Console.WriteLine("Saisir une quantité :");
-            double quantite;
-            if (!double.TryParse(Console.ReadLine(), out quantite) || quantite <= 0)
+            var key = navigation.Naviguer();
+
+            if (key == ConsoleKey.Enter)
             {
-                Console.WriteLine("Quantité invalide.");
-                return;
+                // Validation : plante sélectionnée, demander quantité
+                Console.WriteLine("\nSaisir une quantité :");
+                if (double.TryParse(Console.ReadLine(), out double quantite) && quantite > 0)
+                {
+                    // Ici, appliquer l'arrosage à la plante sélectionnée
+                    // Exemple : Terrain.ArroserPlante(positionSelection, quantite);
+                    Console.WriteLine($"Plante arrosée avec {quantite} unités.");
+                    enNavigation = false;
+                }
+                else
+                {
+                    Console.WriteLine("Quantité invalide, réessayez.");
+                    // Rester en navigation pour retenter
+                }
             }
+            else if (key == ConsoleKey.Escape)
+            {
+                Console.WriteLine("\nArrosage annulé.");
+                enNavigation = false;
+            }
+            // Sinon : flèches → continuer navigation
         }
     }
-
+    // Méthode pour traiter une plante contre les maladies
     private void TraiterPlante()
     {
+        // Vérification de la disponibilité des traitements
         if (!Joueur.UtiliserTraitement())
         {
             Console.WriteLine("Plus de traitements disponibles !");
             Console.WriteLine("Voulez-vous en acheter ? (O/N)");
-            if (Console.ReadKey().Key == ConsoleKey.O)
+            if (Console.ReadKey(true).Key == ConsoleKey.O)
             {
                 Joueur.AcheterTraitement();
-                return;
             }
             return;
         }
@@ -303,16 +340,30 @@ public class Simulateur
         while (enNavigation)
         {
             navigation.AfficherAvecCurseur("Sélectionnez la plante à traiter");
-            enNavigation = navigation.Naviguer();
+            var key = navigation.Naviguer();
 
-            if (!enNavigation)
+            if (key == ConsoleKey.Enter)
             {
-                Terrain.TraiterPlante();
-                Console.WriteLine("Plante traitée avec succès !");
+                // Valider le traitement sur la plante sélectionnée dans le terrain
+                if (Terrain.TraiterPlante()) // À adapter selon signature : devrait traiter la plante sous le curseur
+                {
+                    Console.WriteLine("\nPlante traitée avec succès !");
+                }
+                else
+                {
+                    Console.WriteLine("\nAucune plante à cet emplacement !");
+                }
+                enNavigation = false;
             }
+            else if (key == ConsoleKey.Escape)
+            {
+                Console.WriteLine("\nTraitement annulé.");
+                enNavigation = false;
+            }
+            // Sinon, continuer la navigation avec les flèches
         }
     }
-
+ // Méthode pour gérer les urgences
     private void GererUrgence()
     {
         while (UrgenceManager.EnCours)
@@ -341,18 +392,22 @@ public class Simulateur
         }
     }
 
+    // Méthode pour passer au tour suivant
     private void PasserTour()
     {
         tour++;
         CycleSaisonnier.AvancerSemaine();
 
+        // Génération de la météo pour ce tour
         var meteo = Meteo.Generer(CycleSaisonnier.SaisonActuelle);
         meteo.Afficher();
 
+        // Mise à jour de toutes les plantes
         foreach (var p in Terrain.Plantes.ToList())
         {
             p.Pousser(meteo, Terrain, CycleSaisonnier.SaisonActuelle);
 
+            // Vérification si la plante peut être récoltée ou est morte
             if (p.EstMort || p.PeutRecolter())
             {
                 Console.WriteLine($"[DEBUG] {p.Nom} - EstMort: {p.EstMort}, PeutRecolter: {p.PeutRecolter()}");
@@ -367,6 +422,7 @@ public class Simulateur
             }
         }
 
+        // Affichage du bilan du tour
         UrgenceManager.AfficherBilanTour();
 
         Console.WriteLine($"\n=== Tour {tour} terminé ===");
@@ -374,6 +430,7 @@ public class Simulateur
         Console.ReadKey();
     }
 
+    // Méthode appelée quand le joueur n'a plus d'actions
     private void ActionsEpuipees()
     {
         Console.WriteLine("Actions épuisées pour ce tour!");
@@ -383,11 +440,13 @@ public class Simulateur
         Console.ReadKey();
     }
 
+    // Méthode pour afficher les recommandations selon la saison
     private void AfficherRecommandations()
     {
         Console.WriteLine("=== Recommandations ===");
         Console.WriteLine($"Saison actuelle: {CycleSaisonnier.SaisonActuelle}");
 
+        // Filtrage des plantes recommandées pour la saison actuelle
         var plantesRecommandees = catalogue
             .Where(p => p.Saisons.Contains(CycleSaisonnier.SaisonActuelle.ToString()))
             .ToList();
@@ -409,7 +468,7 @@ public class Simulateur
         Console.ReadKey();
     }
     
-
+    // Méthode pour afficher l'état de toutes les plantes
     public void AfficherEtatPlantes()
     {
         foreach (var plante in Terrain.Plantes)
